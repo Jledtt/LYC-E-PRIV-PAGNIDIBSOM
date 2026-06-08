@@ -3,9 +3,8 @@ import { siteConfig } from "@/config/site";
 import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Pagnidibsom",
-  description:
-    "Contactez le collège-lycée Pagnidibsom à Ouagadougou. Téléphone, email et formulaire en ligne.",
+  title: `Contact — ${siteConfig.fullName}`,
+  description: `Contactez le ${siteConfig.fullName} à Ouagadougou. Téléphone, email et formulaire de contact en ligne. Quartier Sondogo, Secteur 32.`,
 };
 
 export default function ContactPage() {
@@ -40,34 +39,50 @@ export default function ContactPage() {
             <address className="not-italic flex flex-col gap-5">
               {/* Adresse */}
               <div className="flex items-start gap-3">
-                <span className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700" aria-hidden="true">
+                <span
+                  className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700"
+                  aria-hidden="true"
+                >
                   📍
                 </span>
                 <div>
                   <p className="font-medium text-neutral-800 text-sm mb-0.5">Adresse</p>
                   <p className="text-neutral-600 text-sm">{siteConfig.contact.address}</p>
+                  <p className="text-neutral-500 text-xs mt-0.5">{siteConfig.contact.bp}</p>
                 </div>
               </div>
 
-              {/* Téléphone */}
+              {/* Téléphone principal */}
               <div className="flex items-start gap-3">
-                <span className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700" aria-hidden="true">
+                <span
+                  className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700"
+                  aria-hidden="true"
+                >
                   📞
                 </span>
                 <div>
                   <p className="font-medium text-neutral-800 text-sm mb-0.5">Téléphone</p>
                   <a
                     href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
-                    className="text-primary-700 font-semibold hover:underline"
+                    className="text-primary-700 font-semibold hover:underline block"
                   >
                     {siteConfig.contact.phone}
+                  </a>
+                  <a
+                    href={`tel:${siteConfig.contact.phoneAlt.replace(/\s/g, "")}`}
+                    className="text-primary-700 font-semibold hover:underline block mt-0.5"
+                  >
+                    {siteConfig.contact.phoneAlt}
                   </a>
                 </div>
               </div>
 
               {/* WhatsApp */}
               <div className="flex items-start gap-3">
-                <span className="w-9 h-9 shrink-0 bg-green-100 rounded-lg flex items-center justify-center text-green-700" aria-hidden="true">
+                <span
+                  className="w-9 h-9 shrink-0 bg-green-100 rounded-lg flex items-center justify-center text-green-700"
+                  aria-hidden="true"
+                >
                   💬
                 </span>
                 <div>
@@ -85,7 +100,10 @@ export default function ContactPage() {
 
               {/* Email */}
               <div className="flex items-start gap-3">
-                <span className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700" aria-hidden="true">
+                <span
+                  className="w-9 h-9 shrink-0 bg-primary-100 rounded-lg flex items-center justify-center text-primary-700"
+                  aria-hidden="true"
+                >
                   ✉️
                 </span>
                 <div>

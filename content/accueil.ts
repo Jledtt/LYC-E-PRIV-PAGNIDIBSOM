@@ -1,68 +1,79 @@
 export const accueilContent = {
   hero: {
-    heading: "Un cadre d'excellence\npour votre enfant",
+    heading: "Bâtir l'Excellence\npour votre enfant",
     subheading:
-      "Du collège au lycée, Pagnidibsom accompagne chaque élève vers la réussite dans un environnement sérieux, chaleureux et ancré dans les valeurs burkinabè.",
+      "Du collège au lycée général et technique, le Lycée Privé Pagnidibsom accompagne chaque élève vers la réussite dans un cadre clôturé, sécurisé et bienveillant.",
     cta: "Pré-inscrivez votre enfant",
     ctaSecondary: "Découvrir l'école",
   },
   presentation: {
     heading: "Une école qui croit en chaque élève",
-    body: "Fondé il y a moins de quatre ans, le collège-lycée Pagnidibsom s'est imposé comme un établissement de référence à Ouagadougou. Notre pédagogie associe rigueur académique, suivi personnalisé et épanouissement humain.",
+    body: "Fondé en octobre 2021 à Ouagadougou, le Lycée Privé Pagnidibsom s'est imposé en quelques années comme un établissement de référence. En 2025, nos élèves de 3e ont obtenu 100 % de réussite au BEPC. Notre pédagogie associe rigueur académique, suivi personnalisé et épanouissement humain.",
     stats: [
-      { value: "+150", label: "Élèves inscrits" },
-      { value: "6", label: "Niveaux de classes" },
-      { value: "96 %", label: "Taux de réussite aux examens" },
-      { value: "3", label: "Années d'expérience" },
+      { value: "160",    label: "Élèves inscrits" },
+      { value: "100 %",  label: "Réussite BEPC 2025" },
+      { value: "2021",   label: "Année de fondation" },
+      { value: "3 ha",   label: "Domaine clôturé" },
     ],
   },
   pointsForts: {
     heading: "Pourquoi choisir Pagnidibsom ?",
     items: [
       {
-        icon: "📚",
-        title: "Excellence académique",
+        icon: "🎓",
+        title: "100 % de réussite au BEPC",
         description:
-          "Un programme rigoureux aligné sur le curriculum national, avec un suivi individualisé de chaque élève.",
+          "La promotion 2025 a réalisé un taux de réussite de 100 % au Brevet de fin de 3e. Un engagement envers l'excellence qui se confirme chaque année.",
+      },
+      {
+        icon: "🏫",
+        title: "Domaine clôturé de 3 ha",
+        description:
+          "Un terrain entièrement clôturé, sécurisé, avec des salles spacieuses et bien aérées, une cantine moderne et un terrain de sport.",
       },
       {
         icon: "👩‍🏫",
         title: "Enseignants qualifiés",
         description:
-          "Une équipe pédagogique diplômée et engagée, sélectionnée pour sa compétence et sa passion de l'enseignement.",
+          "Une équipe pédagogique diplômée et engagée, sélectionnée pour sa compétence et sa passion de la transmission du savoir.",
       },
       {
-        icon: "🤝",
-        title: "Encadrement bienveillant",
+        icon: "🔧",
+        title: "Filières techniques",
         description:
-          "Un environnement sûr et stimulant où chaque élève est connu, soutenu et encouragé à progresser.",
-      },
-      {
-        icon: "🏫",
-        title: "Infrastructures adaptées",
-        description:
-          "Des salles de classe bien équipées, une bibliothèque et des espaces propices à l'apprentissage.",
+          "BEP1 Génie Civil et BEP1 Électrotechnique : des formations professionnalisantes pour préparer les élèves aux métiers de demain.",
       },
     ],
   },
   cycles: {
-    heading: "Nos cycles d'enseignement",
+    heading: "Nos filières d'enseignement",
     college: {
       label: "Collège",
       classes: "6e · 5e · 4e · 3e",
       description:
-        "Un encadrement solide pour construire les bases académiques et préparer le Brevet de fin de 3e.",
+        "Un encadrement solide pour construire les bases académiques et préparer le Brevet de fin de 3e (BEPC).",
     },
     lycee: {
-      label: "Lycée",
+      label: "Lycée Général",
       classes: "2nde · 1re",
       description:
-        "Un accompagnement ciblé vers le Baccalauréat, avec les séries A et C disponibles.",
+        "Un accompagnement ciblé vers le Baccalauréat général, séries Littéraire (A) et Scientifique (C).",
     },
+    technique: {
+      label: "Technique",
+      classes: "BEP1 GC · BEP1 ÉT",
+      description:
+        "Deux filières professionnelles : Génie Civil et Électrotechnique, pour une insertion rapide dans le monde du travail.",
+    },
+  },
+  reussite: {
+    heading: "100 % de réussite au BEPC 2025",
+    body: "Toute notre promotion de 3e a réussi le Brevet d'Études du Premier Cycle lors de la session 2025. Ce résultat historique reflète l'engagement quotidien de nos enseignants et de nos élèves.",
+    caption: "Remise du tableau d'honneur — Lycée Privé Pagnidibsom, session BEPC 2025",
   },
   ctaBanner: {
     heading: "Les inscriptions pour la rentrée sont ouvertes",
-    body: "Déposez dès maintenant votre demande de pré-inscription. Nous vous contacterons rapidement pour finaliser le dossier.",
+    body: "Déposez dès maintenant votre demande de pré-inscription. Nous vous contacterons dans les 48 heures pour finaliser le dossier.",
     cta: "Remplir le formulaire de pré-inscription",
   },
 };

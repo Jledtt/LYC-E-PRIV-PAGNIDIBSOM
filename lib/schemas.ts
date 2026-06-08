@@ -12,7 +12,7 @@ export const preInscriptionSchema = z.object({
   website: z.string().max(0).optional(),
 
   /* Élève */
-  eleveNom: z.string().min(2, "Le nom est requis (minimum 2 caractères)").max(100),
+  eleveNom:    z.string().min(2, "Le nom est requis (minimum 2 caractères)").max(100),
   elevePrenom: z.string().min(2, "Le prénom est requis (minimum 2 caractères)").max(100),
   eleveDateNaissance: z
     .string()
@@ -20,7 +20,7 @@ export const preInscriptionSchema = z.object({
     .refine((v) => !isNaN(Date.parse(v)), { message: "Date invalide" }),
   eleveSexe: z.enum(["M", "F"] as const).refine(Boolean, "Le sexe est requis"),
   classeSouhaitee: z
-    .enum(["6e", "5e", "4e", "3e", "2nde", "1re"] as const)
+    .enum(["6e", "5e", "4e", "3e", "2nde", "1re", "BEP1-GC", "BEP1-ET"] as const)
     .refine(Boolean, "La classe souhaitée est requise"),
   serie: z.preprocess(
     emptyToUndefined,
@@ -29,8 +29,8 @@ export const preInscriptionSchema = z.object({
   ecolePrecedente: z.preprocess(emptyToUndefined, z.string().max(200).optional()),
 
   /* Parent / tuteur */
-  parentNom: z.string().min(2, "Le nom est requis").max(100),
-  parentPrenom: z.string().min(2, "Le prénom est requis").max(100),
+  parentNom:       z.string().min(2, "Le nom est requis").max(100),
+  parentPrenom:    z.string().min(2, "Le prénom est requis").max(100),
   parentTelephone: z
     .string()
     .min(1, "Le téléphone est requis")
@@ -40,7 +40,7 @@ export const preInscriptionSchema = z.object({
     z.string().email("Email invalide").max(200).optional()
   ),
   parentProfession: z.preprocess(emptyToUndefined, z.string().max(100).optional()),
-  quartierVille: z.string().min(2, "Le quartier/ville est requis").max(150),
+  quartierVille:    z.string().min(2, "Le quartier/ville est requis").max(150),
 
   /* Message libre */
   message: z.preprocess(emptyToUndefined, z.string().max(1000).optional()),
@@ -66,8 +66,8 @@ export const contactSchema = z
   })
   .refine(
     (data) => {
-      const hasTel = typeof data.telephone === "string" && data.telephone.length > 0;
-      const hasEmail = typeof data.email === "string" && data.email.length > 0;
+      const hasTel   = typeof data.telephone === "string" && data.telephone.length > 0;
+      const hasEmail = typeof data.email     === "string" && data.email.length     > 0;
       return hasTel || hasEmail;
     },
     {

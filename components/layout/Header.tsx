@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/ecole", label: "L'École" },
   { href: "/formations", label: "Formations" },
   { href: "/admission", label: "Admission" },
+  { href: "/tarifs", label: "Tarifs" },
   { href: "/actualites", label: "Actualités" },
   { href: "/contact", label: "Contact" },
 ];
@@ -60,7 +61,7 @@ export default function Header() {
         <div className="hidden md:block">
           <Link
             href="/pre-inscription"
-            className="inline-block bg-accent-500 hover:bg-accent-600 text-white text-sm font-semibold px-4 py-2 rounded transition-colors"
+            className="inline-block bg-accent-500 hover:bg-accent-600 text-neutral-900 text-sm font-bold px-4 py-2 rounded transition-colors"
           >
             Pré-inscription
           </Link>
@@ -115,7 +116,7 @@ export default function Header() {
             <Link
               href="/pre-inscription"
               onClick={() => setMenuOpen(false)}
-              className="mt-2 text-center bg-accent-500 hover:bg-accent-600 text-white font-semibold px-4 py-3 rounded transition-colors"
+              className="mt-2 text-center bg-accent-500 hover:bg-accent-600 text-neutral-900 font-bold px-4 py-3 rounded transition-colors"
             >
               Pré-inscription
             </Link>

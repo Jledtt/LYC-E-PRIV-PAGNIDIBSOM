@@ -6,6 +6,7 @@ const footerNav = [
   { href: "/ecole", label: "L'École" },
   { href: "/formations", label: "Formations" },
   { href: "/admission", label: "Admission" },
+  { href: "/tarifs", label: "Tarifs" },
   { href: "/pre-inscription", label: "Pré-inscription" },
   { href: "/contact", label: "Contact" },
   { href: "/actualites", label: "Actualités" },
@@ -95,6 +96,12 @@ export default function Footer() {
               className="hover:text-white transition-colors"
             >
               {siteConfig.contact.phone}
+            </a>
+            <a
+              href={`tel:${siteConfig.contact.phoneAlt.replace(/\s/g, "")}`}
+              className="hover:text-white transition-colors"
+            >
+              {siteConfig.contact.phoneAlt}
             </a>
             <a
               href={`mailto:${siteConfig.contact.email}`}

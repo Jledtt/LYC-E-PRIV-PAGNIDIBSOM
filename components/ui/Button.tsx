@@ -15,12 +15,15 @@ interface ButtonProps {
 }
 
 const variantClasses: Record<Variant, string> = {
+  /* Bordeaux plein — texte blanc */
   primary:
-    "bg-primary-700 hover:bg-primary-800 text-white focus-visible:ring-primary-600",
+    "bg-primary-800 hover:bg-primary-900 text-white focus-visible:ring-primary-700",
+  /* Or/Jaune — texte sombre pour le contraste */
   secondary:
-    "bg-accent-500 hover:bg-accent-600 text-white focus-visible:ring-accent-500",
+    "bg-accent-500 hover:bg-accent-600 text-neutral-900 font-bold focus-visible:ring-accent-500",
+  /* Contour bordeaux */
   outline:
-    "border-2 border-primary-700 text-primary-700 hover:bg-primary-50 focus-visible:ring-primary-600",
+    "border-2 border-primary-800 text-primary-800 hover:bg-primary-50 focus-visible:ring-primary-700",
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -40,7 +43,7 @@ export default function Button({
   onClick,
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center font-semibold rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   const classes = `${base} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   if (href) {

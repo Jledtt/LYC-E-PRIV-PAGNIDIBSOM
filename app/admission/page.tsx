@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { admissionContent as c } from "@/content/admission";
+import { siteConfig } from "@/config/site";
 import Button from "@/components/ui/Button";
 
 export const metadata: Metadata = {
@@ -59,7 +61,7 @@ export default function AdmissionPage() {
             >
               {c.documents.heading}
             </h2>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-3 mb-5">
               {c.documents.items.map((doc) => (
                 <li key={doc} className="flex items-start gap-3 text-neutral-700">
                   <span
@@ -72,6 +74,16 @@ export default function AdmissionPage() {
                 </li>
               ))}
             </ul>
+            {c.documents.notes.length > 0 && (
+              <ul className="flex flex-col gap-1.5 bg-accent-50 border border-accent-100 rounded-lg p-4">
+                {c.documents.notes.map((note) => (
+                  <li key={note} className="text-sm text-neutral-700 flex items-start gap-2">
+                    <span className="text-accent-600 shrink-0 mt-0.5" aria-hidden="true">ℹ</span>
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Frais */}
@@ -84,15 +96,54 @@ export default function AdmissionPage() {
                 {c.frais.heading}
               </h2>
               <p className="text-neutral-600 mb-4 leading-relaxed">{c.frais.note}</p>
-              <a
-                href={`tel:${"+22600000000"}`}
-                className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:underline"
+              <address className="not-italic flex flex-col gap-2">
+                <a
+                  href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
+                  className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:underline"
+                >
+                  <svg
+                    className="w-4 h-4 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  {siteConfig.contact.phone}
+                </a>
+                <a
+                  href={`tel:${siteConfig.contact.phoneAlt.replace(/\s/g, "")}`}
+                  className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:underline"
+                >
+                  <svg
+                    className="w-4 h-4 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  {siteConfig.contact.phoneAlt}
+                </a>
+              </address>
+              <Link
+                href="/tarifs"
+                className="inline-flex items-center gap-1 mt-5 text-primary-700 font-semibold text-sm hover:underline"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                {c.frais.contact}
-              </a>
+                Voir le détail des tarifs <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </div>

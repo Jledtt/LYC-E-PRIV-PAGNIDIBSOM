@@ -1,31 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  /* Palette principale */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #1d4ed8;
-  --color-primary-700: #1e3a8a;
-  --color-primary-800: #1e2e6e;
-  --color-primary-900: #172155;
+  /* ─── Bordeaux (couleur principale) ─── */
+  --color-primary-50:  #fdf2f4;
+  --color-primary-100: #fce7eb;
+  --color-primary-200: #f8d0d8;
+  --color-primary-300: #f3a5b4;
+  --color-primary-400: #ea7491;
+  --color-primary-500: #dc4c6c;
+  --color-primary-600: #c42a4d;
+  --color-primary-700: #a51e3d;
+  --color-primary-800: #8b1e2d;
+  --color-primary-900: #6b1523;
 
-  /* Accent terracotta/orange */
-  --color-accent-50: #fff7ed;
-  --color-accent-100: #ffedd5;
-  --color-accent-200: #fed7aa;
-  --color-accent-300: #fdba74;
-  --color-accent-400: #fb923c;
-  --color-accent-500: #c2621a;
-  --color-accent-600: #a84f0e;
-  --color-accent-700: #8a3e09;
-  --color-accent-800: #6c2f07;
+  /* ─── Or/Jaune (accent) ─── */
+  --color-accent-50:  #fffbeb;
+  --color-accent-100: #fef3c7;
+  --color-accent-200: #fde68a;
+  --color-accent-300: #fcd34d;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #e6a817;
+  --color-accent-600: #ca8f12;
+  --color-accent-700: #a5740d;
+  --color-accent-800: #7e580a;
 
-  /* Neutres */
-  --color-neutral-50: #fafafa;
+  /* ─── Neutres ─── */
+  --color-neutral-50:  #fafafa;
   --color-neutral-100: #f5f5f5;
   --color-neutral-200: #e5e5e5;
   --color-neutral-300: #d4d4d4;
@@ -36,19 +36,18 @@
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
 
-  /* Typographie */
-  --font-sans: var(--font-inter);
+  /* ─── Typographie ─── */
+  --font-sans:  var(--font-inter);
   --font-serif: var(--font-lora);
 }
 
 /* Variables CSS globales */
 :root {
-  --color-bg: #ffffff;
-  --color-text: #262626;
+  --color-bg:     #fffdf8;
+  --color-text:   #1f2937;
   --color-border: #e5e5e5;
 }
 
-/* Reset et base */
 *,
 *::before,
 *::after {
@@ -69,9 +68,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Focus visible pour l'accessibilité */
+/* Focus visible — bordeaux */
 :focus-visible {
-  outline: 2px solid #1d4ed8;
+  outline: 2px solid #8b1e2d;
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -81,7 +80,7 @@ body {
   position: absolute;
   top: -100%;
   left: 0;
-  background: #1d4ed8;
+  background: #8b1e2d;
   color: #fff;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
@@ -92,7 +91,6 @@ body {
   top: 0;
 }
 
-/* Utilitaires typographiques */
 .heading-serif {
   font-family: var(--font-lora), Georgia, serif;
 }

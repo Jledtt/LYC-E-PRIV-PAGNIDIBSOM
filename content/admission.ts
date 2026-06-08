@@ -1,12 +1,12 @@
 export const admissionContent = {
   meta: {
-    title: "Admission — Pagnidibsom",
+    title: "Admission — Lycée Privé Pagnidibsom",
     description:
-      "Procédure d'admission au collège-lycée Pagnidibsom : documents requis, étapes et formulaire de pré-inscription.",
+      "Procédure d'admission au Lycée Privé Pagnidibsom : dossier requis, étapes d'inscription et formulaire de pré-inscription.",
   },
   hero: {
     heading: "Admission",
-    subheading: "Une procédure simple et transparente pour rejoindre notre communauté scolaire",
+    subheading: "Une procédure claire pour rejoindre la famille Pagnidibsom",
   },
   procedure: {
     heading: "Procédure d'inscription",
@@ -25,35 +25,42 @@ export const admissionContent = {
       },
       {
         num: "03",
-        title: "Entretien et dossier",
+        title: "Dépôt du dossier",
         description:
-          "Rencontrez l'administration avec le dossier de votre enfant (relevés de notes, bulletins, livret scolaire).",
+          "Déposez votre dossier complet à l'administration (voir pièces ci-dessous). Un entretien peut être organisé selon le niveau.",
       },
       {
         num: "04",
         title: "Inscription définitive",
         description:
-          "Après acceptation du dossier, finalisez l'inscription en réglant les frais de scolarité selon le calendrier convenu.",
+          "Après acceptation du dossier, finalisez l'inscription en réglant la première tranche des frais de scolarité.",
       },
     ],
   },
   documents: {
-    heading: "Documents à préparer",
+    heading: "Pièces du dossier d'inscription",
     items: [
-      "Extrait d'acte de naissance ou jugement supplétif",
-      "Bulletins scolaires des deux dernières années",
-      "Relevé de notes du BEPC (pour les candidats en 2nde)",
-      "3 photos d'identité récentes",
+      "Une demande d'inscription adressée au Proviseur",
+      "Une fiche d'inscription et une fiche d'engagement signées (formulaires délivrés par l'établissement)",
+      "Une copie légalisée de l'acte ou extrait de naissance",
+      "Pour la 6e : copie légalisée du CEP + bulletins originaux de l'année écoulée + relevé de notes du CEP",
+      "Pour la 2nde et les BEP1 : copie légalisée du BEPC ou CAP + bulletins originaux + relevé de notes du BEPC",
+      "Trois (3) photos d'identité récentes",
       "Certificat de transfert (si changement d'établissement)",
+      "Une chemise cartonnée portant le nom et la classe de l'élève",
+    ],
+    notes: [
+      "Chaque élève apporte une rame de papier à l'inscription.",
+      "Les frais de dossiers d'examen (BEPC, Bac, BEP) ne sont pas inclus dans les frais de scolarité.",
     ],
   },
   frais: {
     heading: "Frais de scolarité",
-    note: "Les frais de scolarité sont communiqués lors de l'entretien d'admission. Contactez-nous pour plus d'informations.",
-    contact: "Appelez-nous au +226 00 00 00 00",
+    note: "Les frais sont détaillés sur la page Tarifs. Pour toute question, n'hésitez pas à nous appeler.",
+    contact: "Appelez le 72 81 61 59 ou 78 42 62 06",
   },
   cta: {
-    heading: "Prêt à déposer une candidature ?",
+    heading: "Prêt à nous rejoindre ?",
     body: "Remplissez le formulaire de pré-inscription en ligne. Nous traiterons votre demande dans les plus brefs délais.",
     button: "Accéder au formulaire",
   },
