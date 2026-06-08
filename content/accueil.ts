@@ -2,13 +2,13 @@ export const accueilContent = {
   hero: {
     heading: "Un cadre d'excellence\npour votre enfant",
     subheading:
-      "Du collège au lycée, Kiswensida accompagne chaque élève vers la réussite dans un environnement sérieux, chaleureux et ancré dans les valeurs burkinabè.",
+      "Du collège au lycée, Pagnidibsom accompagne chaque élève vers la réussite dans un environnement sérieux, chaleureux et ancré dans les valeurs burkinabè.",
     cta: "Pré-inscrivez votre enfant",
     ctaSecondary: "Découvrir l'école",
   },
   presentation: {
     heading: "Une école qui croit en chaque élève",
-    body: "Fondé il y a moins de quatre ans, le collège-lycée Kiswensida s'est imposé comme un établissement de référence à Ouagadougou. Notre pédagogie associe rigueur académique, suivi personnalisé et épanouissement humain.",
+    body: "Fondé il y a moins de quatre ans, le collège-lycée Pagnidibsom s'est imposé comme un établissement de référence à Ouagadougou. Notre pédagogie associe rigueur académique, suivi personnalisé et épanouissement humain.",
     stats: [
       { value: "+150", label: "Élèves inscrits" },
       { value: "6", label: "Niveaux de classes" },
@@ -17,7 +17,7 @@ export const accueilContent = {
     ],
   },
   pointsForts: {
-    heading: "Pourquoi choisir Kiswensida ?",
+    heading: "Pourquoi choisir Pagnidibsom ?",
     items: [
       {
         icon: "📚",
@@ -57,7 +57,7 @@ export const accueilContent = {
       label: "Lycée",
       classes: "2nde · 1re",
       description:
-        "Un accompagnement ciblé vers le Baccalauréat, avec les séries A, C et D disponibles.",
+        "Un accompagnement ciblé vers le Baccalauréat, avec les séries A et C disponibles.",
     },
   },
   ctaBanner: {

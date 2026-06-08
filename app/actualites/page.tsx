@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Actualités — Kiswensida",
-  description: "Les actualités du collège-lycée Kiswensida à Ouagadougou.",
+  title: "Actualités — Pagnidibsom",
+  description: "Les actualités du collège-lycée Pagnidibsom à Ouagadougou.",
 };
 
 export default function ActualitesPage() {

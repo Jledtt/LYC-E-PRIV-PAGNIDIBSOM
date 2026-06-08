@@ -21,7 +21,7 @@ export async function sendNotificationEmail(opts: {
   const domain = new URL(siteUrl).hostname;
 
   const { error } = await resend.emails.send({
-    from: `Kiswensida <noreply@${domain}>`,
+    from: `Pagnidibsom <noreply@${domain}>`,
     to,
     subject: opts.subject,
     html: opts.html,

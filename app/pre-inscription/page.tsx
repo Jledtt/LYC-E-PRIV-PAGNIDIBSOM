@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import PreInscriptionForm from "@/components/forms/PreInscriptionForm";
 
 export const metadata: Metadata = {
-  title: "Pré-inscription — Kiswensida",
+  title: "Pré-inscription — Pagnidibsom",
   description:
-    "Déposez votre demande de pré-inscription au collège-lycée Kiswensida à Ouagadougou. Formulaire en ligne, gratuit et sans engagement.",
+    "Déposez votre demande de pré-inscription au collège-lycée Pagnidibsom à Ouagadougou. Formulaire en ligne, gratuit et sans engagement.",
 };
 
 export default function PreInscriptionPage() {

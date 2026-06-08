@@ -1,4 +1,4 @@
--- Migration : Kiswensida Phase 1
+-- Migration : Pagnidibsom Phase 1
 -- Créer via Supabase SQL Editor
 
 -- ============================================================

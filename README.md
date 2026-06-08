@@ -1,6 +1,6 @@
-# Kiswensida — Site vitrine (Phase 1)
+# Pagnidibsom — Site vitrine (Phase 1)
 
-Site web du collège-lycée Kiswensida à Ouagadougou, Burkina Faso.
+Site web du collège-lycée Pagnidibsom à Ouagadougou, Burkina Faso.
 
 **Stack :** Next.js 14+ · TypeScript · Tailwind CSS v4 · Supabase · Server Actions · Zod · Resend
 

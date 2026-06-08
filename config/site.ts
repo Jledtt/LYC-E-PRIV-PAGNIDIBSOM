@@ -1,9 +1,10 @@
 export const siteConfig = {
-  name: "Kiswensida",
-  fullName: "Collège-Lycée Kiswensida",
+  name: "Pagnidibsom",
+  fullName: "Lycée Privé Pagnidibsom",
+  founder: "Tiendrebeogo Ousmane",
   tagline: "Former des esprits, bâtir des avenirs",
   description:
-    "Établissement d'enseignement privé à Ouagadougou, Burkina Faso. Nous accueillons les élèves du collège (6e à 3e) et du lycée (2nde et 1re) dans un cadre sérieux et bienveillant.",
+    "Le Lycée Privé Pagnidibsom est un établissement d'enseignement privé à Ouagadougou, Burkina Faso. Nous accueillons les élèves du collège (6e à 3e) et du lycée (2nde et 1re) dans un cadre sérieux et bienveillant.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kiswensida.bf",
   locale: "fr_BF",
 
@@ -31,7 +32,6 @@ export const siteConfig = {
   series: [
     { value: "A", label: "Littéraire (A)" },
     { value: "C", label: "Scientifique (C)" },
-    { value: "D", label: "Scientifique (D)" },
   ],
 
   classeOptions: [

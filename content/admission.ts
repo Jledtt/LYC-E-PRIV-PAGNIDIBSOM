@@ -1,8 +1,8 @@
 export const admissionContent = {
   meta: {
-    title: "Admission — Kiswensida",
+    title: "Admission — Pagnidibsom",
     description:
-      "Procédure d'admission au collège-lycée Kiswensida : documents requis, étapes et formulaire de pré-inscription.",
+      "Procédure d'admission au collège-lycée Pagnidibsom : documents requis, étapes et formulaire de pré-inscription.",
   },
   hero: {
     heading: "Admission",

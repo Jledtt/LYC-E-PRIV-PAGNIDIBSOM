@@ -3,9 +3,9 @@ import { siteConfig } from "@/config/site";
 import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Kiswensida",
+  title: "Contact — Pagnidibsom",
   description:
-    "Contactez le collège-lycée Kiswensida à Ouagadougou. Téléphone, email et formulaire en ligne.",
+    "Contactez le collège-lycée Pagnidibsom à Ouagadougou. Téléphone, email et formulaire en ligne.",
 };
 
 export default function ContactPage() {

@@ -1,8 +1,8 @@
 export const formationsContent = {
   meta: {
-    title: "Nos Formations — Kiswensida",
+    title: "Nos Formations — Pagnidibsom",
     description:
-      "Collège (6e à 3e) et Lycée (2nde, 1re) : découvrez les programmes et l'organisation pédagogique de Kiswensida.",
+      "Collège (6e à 3e) et Lycée (2nde, 1re) : découvrez les programmes et l'organisation pédagogique de Pagnidibsom.",
   },
   hero: {
     heading: "Nos Formations",
@@ -37,7 +37,7 @@ export const formationsContent = {
     heading: "Cycle du Lycée",
     classes: "2nde — 1re",
     description:
-      "Le lycée Kiswensida propose les principales séries du Baccalauréat général. Les élèves bénéficient d'un encadrement ciblé pour aborder les épreuves avec confiance.",
+      "Le Lycée Privé Pagnidibsom prépare les élèves aux séries A et C du Baccalauréat général. Les élèves bénéficient d'un encadrement ciblé pour aborder les épreuves avec confiance.",
     series: [
       {
         code: "A",
@@ -49,12 +49,6 @@ export const formationsContent = {
         code: "C",
         label: "Série Scientifique (C)",
         description: "Mathématiques et Sciences Physiques avec spécialisation scientifique.",
-      },
-      {
-        code: "D",
-        label: "Série Scientifique (D)",
-        description:
-          "Mathématiques, Sciences de la Vie et de la Terre, orientation sciences naturelles.",
       },
     ],
     examen: "Baccalauréat général",

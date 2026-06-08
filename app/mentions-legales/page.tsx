@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Mentions légales — Kiswensida",
-  description: "Mentions légales du site du collège-lycée Kiswensida.",
+  title: "Mentions légales — Pagnidibsom",
+  description: "Mentions légales du site du collège-lycée Pagnidibsom.",
   robots: { index: false },
 };
 
