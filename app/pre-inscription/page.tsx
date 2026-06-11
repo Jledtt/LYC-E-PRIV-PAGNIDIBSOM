@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import PreInscriptionForm from "@/components/forms/PreInscriptionForm";
 
 export const metadata: Metadata = {
-  title: "Pré-inscription — Pagnidibsom",
+  title: "Pré-inscription en ligne",
   description:
-    "Déposez votre demande de pré-inscription au collège-lycée Pagnidibsom à Ouagadougou. Formulaire en ligne, gratuit et sans engagement.",
+    "Formulaire de pré-inscription gratuit et sans engagement au Lycée Privé Pagnidibsom à Ouagadougou — notre équipe vous contacte sous 48 h pour finaliser le dossier.",
 };
 
 export default function PreInscriptionPage() {

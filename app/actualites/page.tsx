@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Actualités — Pagnidibsom",
-  description: "Les actualités du collège-lycée Pagnidibsom à Ouagadougou.",
+  title: "Actualités",
+  description:
+    "Retrouvez les actualités, annonces et événements du Lycée Privé Pagnidibsom à Ouagadougou.",
 };
 
 export default function ActualitesPage() {

@@ -69,14 +69,20 @@ export default function PreInscriptionForm() {
       noValidate
       className="flex flex-col gap-8"
     >
-      {/* Honeypot — caché aux visiteurs */}
+      {/* Honeypot — hors écran, jamais display:none (trop détectable) */}
       <input
         type="text"
         name="website"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden="true"
-        className="hidden"
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+        }}
       />
 
       {/* Erreur globale */}

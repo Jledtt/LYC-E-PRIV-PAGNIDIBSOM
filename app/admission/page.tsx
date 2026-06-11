@@ -5,8 +5,9 @@ import { siteConfig } from "@/config/site";
 import Button from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: c.meta.title,
-  description: c.meta.description,
+  title: "Admission & Inscription",
+  description:
+    "Procédure d'inscription, dossier requis et frais de scolarité du Lycée Privé Pagnidibsom à Ouagadougou. Déposez votre pré-inscription en ligne — gratuit, sans engagement.",
 };
 
 export default function AdmissionPage() {

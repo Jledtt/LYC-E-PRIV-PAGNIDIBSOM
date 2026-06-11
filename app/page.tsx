@@ -6,11 +6,15 @@ import { accueilContent as c } from "@/content/accueil";
 import Button from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.fullName} — ${siteConfig.tagline}`,
-  description: siteConfig.description,
+  title: {
+    absolute: "Lycée Privé Pagnidibsom — Bâtir l'Excellence | Ouagadougou",
+  },
+  description:
+    "Lycée privé à Ouagadougou, Secteur 32 — Enseignement Général (6e à 1re, séries A et C) et Technique (BEP Génie Civil, BEP Électrotechnique). 100 % de réussite au BEPC 2025. Inscriptions ouvertes.",
   openGraph: {
-    title: siteConfig.fullName,
-    description: siteConfig.description,
+    title: "Lycée Privé Pagnidibsom — Bâtir l'Excellence",
+    description:
+      "Lycée privé à Ouagadougou, Secteur 32 — Enseignement Général et Technique. 100 % de réussite au BEPC 2025.",
   },
 };
 

@@ -3,8 +3,9 @@ import { siteConfig } from "@/config/site";
 import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
-  title: `Contact — ${siteConfig.fullName}`,
-  description: `Contactez le ${siteConfig.fullName} à Ouagadougou. Téléphone, email et formulaire de contact en ligne. Quartier Sondogo, Secteur 32.`,
+  title: "Contact",
+  description:
+    "Contactez le Lycée Privé Pagnidibsom — Quartier Sondogo, Secteur 32, Ouagadougou. Tél : +226 72 81 61 59 / +226 78 42 62 06. Formulaire de contact en ligne.",
 };
 
 export default function ContactPage() {

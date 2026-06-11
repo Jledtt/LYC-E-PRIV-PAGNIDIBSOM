@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Mentions légales — Pagnidibsom",
-  description: "Mentions légales du site du collège-lycée Pagnidibsom.",
+  title: "Mentions légales",
+  description:
+    "Mentions légales du site du Lycée Privé Pagnidibsom, Ouagadougou, Burkina Faso.",
   robots: { index: false },
 };
 

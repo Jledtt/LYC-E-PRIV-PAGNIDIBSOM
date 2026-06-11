@@ -4,8 +4,9 @@ import { formationsContent as c } from "@/content/formations";
 import Button from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: c.meta.title,
-  description: c.meta.description,
+  title: "Nos Formations",
+  description:
+    "Collège (6e–3e, préparation au BEPC), Lycée Général (séries A et C) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) à Ouagadougou, Burkina Faso. Inscriptions ouvertes.",
 };
 
 export default function FormationsPage() {

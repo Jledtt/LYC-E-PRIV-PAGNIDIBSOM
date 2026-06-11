@@ -3,8 +3,9 @@ import Image from "next/image";
 import { ecoleContent as c } from "@/content/ecole";
 
 export const metadata: Metadata = {
-  title: c.meta.title,
-  description: c.meta.description,
+  title: "Notre École",
+  description:
+    "Histoire, équipe dirigeante, infrastructures et valeurs du Lycée Privé Pagnidibsom — établissement privé fondé en octobre 2021 au Quartier Sondogo, Secteur 32, Ouagadougou, Burkina Faso.",
 };
 
 export default function EcolePage() {

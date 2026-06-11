@@ -3,8 +3,9 @@ import Link from "next/link";
 import { tarifsContent as c } from "@/content/tarifs";
 
 export const metadata: Metadata = {
-  title: c.meta.title,
-  description: c.meta.description,
+  title: "Tarifs & Frais de scolarité",
+  description:
+    "Frais de scolarité 2025-2026 du Lycée Privé Pagnidibsom : enseignement général (6e à 1re) et technique (BEP Génie Civil, BEP Électrotechnique). Paiement en trois tranches, montants en FCFA.",
 };
 
 export default function TarifsPage() {
