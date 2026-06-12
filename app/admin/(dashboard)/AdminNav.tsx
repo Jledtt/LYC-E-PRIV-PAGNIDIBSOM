@@ -7,6 +7,7 @@ const navLinks = [
   { href: "/admin", label: "Tableau de bord" },
   { href: "/admin/pre-inscriptions", label: "Pré-inscriptions" },
   { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/actualites", label: "Actualités" },
 ];
 
 export default function AdminNav() {
