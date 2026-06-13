@@ -17,6 +17,8 @@ export default function PreInscriptionForm() {
   const [result, setResult] = useState<ActionResult | null>(null);
   const [isPending, startTransition] = useTransition();
   const [classeSouhaitee, setClasseSouhaitee] = useState("");
+  const [eleveInfo, setEleveInfo] = useState<{ nom: string; prenom: string } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const fieldErrors = result && !result.success ? (result.fieldErrors ?? {}) : undefined;
   const showSerie = classeSouhaitee === "2nde" || classeSouhaitee === "1re";
@@ -24,17 +26,49 @@ export default function PreInscriptionForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const eleveNom = String(formData.get("eleveNom") ?? "");
+    const elevePrenom = String(formData.get("elevePrenom") ?? "");
     startTransition(async () => {
       const res = await submitPreInscription(formData);
       setResult(res);
       if (res.success) {
         formRef.current?.reset();
         setClasseSouhaitee("");
+        setEleveInfo({ nom: eleveNom, prenom: elevePrenom });
+        setCopied(false);
       }
     });
   }
 
+  async function handleCopyDossierUrl(url: string) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = url;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.error("[pre-inscription] Copie du lien échouée :", err);
+    }
+  }
+
   if (result?.success) {
+    const dossierUrl = result.dossierUrl;
+    const nomComplet = eleveInfo ? `${eleveInfo.prenom} ${eleveInfo.nom}`.trim() : "";
+    const whatsappMessage = dossierUrl
+      ? `Bonjour, voici le lien pour compléter et suivre le dossier d'inscription de ${nomComplet || "l'élève"} au Lycée Privé Pagnidibsom : ${dossierUrl}`
+      : "";
+    const whatsappHref = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+
     return (
       <div
         role="alert"
@@ -51,9 +85,55 @@ export default function PreInscriptionForm() {
           Votre demande de pré-inscription a bien été enregistrée. Un membre de notre équipe vous
           contactera dans les 48 heures.
         </p>
+
+        {dossierUrl && (
+          <div className="w-full max-w-md flex flex-col gap-4 mt-2 p-5 rounded-lg border border-accent-200 bg-[#FFFDF8] text-left">
+            <p className="text-sm text-[#1F2937]">
+              Ce lien personnel vous permet de <strong>compléter votre dossier</strong> (déposer
+              les pièces demandées) et de <strong>suivre son état d&apos;avancement</strong>.
+              Conservez-le précieusement.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                readOnly
+                value={dossierUrl}
+                onFocus={(e) => e.currentTarget.select()}
+                className="flex-1 min-w-0 text-xs sm:text-sm rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-[#1F2937] font-mono"
+                aria-label="Lien de votre dossier d'inscription"
+              />
+              <button
+                type="button"
+                onClick={() => handleCopyDossierUrl(dossierUrl)}
+                className="shrink-0 rounded-lg border border-primary-800 text-primary-800 px-4 py-2.5 text-sm font-semibold hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
+              >
+                {copied ? "Lien copié !" : "Copier le lien"}
+              </button>
+            </div>
+
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-lg bg-accent-500 hover:bg-accent-600 text-white font-semibold py-2.5 px-4 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
+            >
+              Recevoir ce lien sur WhatsApp
+            </a>
+
+            <p className="text-xs text-primary-800 font-medium">
+              ⚠ Ce lien est personnel et confidentiel : ne le partagez pas publiquement.
+            </p>
+          </div>
+        )}
+
         <button
           type="button"
-          onClick={() => setResult(null)}
+          onClick={() => {
+            setResult(null);
+            setEleveInfo(null);
+            setCopied(false);
+          }}
           className="mt-2 text-primary-700 underline text-sm"
         >
           Soumettre une autre demande
