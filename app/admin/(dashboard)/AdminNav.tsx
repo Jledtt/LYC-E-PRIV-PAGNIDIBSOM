@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { href: "/admin", label: "Tableau de bord" },
   { href: "/admin/pre-inscriptions", label: "Pré-inscriptions" },
+  { href: "/admin/dossiers", label: "Dossiers" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/actualites", label: "Actualités" },
 ];
