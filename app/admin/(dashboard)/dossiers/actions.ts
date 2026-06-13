@@ -1,9 +1,13 @@
 "use server";
 
+import crypto from "crypto";
 import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
+import { siteConfig } from "@/config/site";
 
 export type ActionResult = { success: true } | { success: false; error: string };
+
+export type RenewTokenResult = { success: true; newUrl: string } | { success: false; error: string };
 
 export async function validatePieceAction(
   preInscriptionId: string,
@@ -31,6 +35,33 @@ export async function validatePieceAction(
   revalidatePath("/admin/dossiers");
   revalidatePath("/admin");
   return { success: true };
+}
+
+export async function renewDossierTokenAction(preInscriptionId: string): Promise<RenewTokenResult> {
+  const supabase = await createAuthClient();
+
+  const newToken = crypto.randomBytes(32).toString("base64url");
+  const newExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 j
+
+  const { data, error } = await supabase
+    .from("pre_inscriptions")
+    .update({ dossier_token: newToken, dossier_token_expires_at: newExpiresAt.toISOString() })
+    .eq("id", preInscriptionId)
+    .select("id");
+
+  if (error) {
+    console.error("[admin/dossiers] Erreur renouvellement token :", error);
+    return { success: false, error: "Erreur lors du renouvellement du lien." };
+  }
+
+  if (!data || data.length === 0) {
+    return { success: false, error: "Dossier introuvable." };
+  }
+
+  revalidatePath(`/admin/dossiers/${preInscriptionId}`);
+  revalidatePath("/admin/dossiers");
+
+  return { success: true, newUrl: `${siteConfig.url}/mon-dossier/${newToken}` };
 }
 
 export async function refusePieceAction(

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createAuthClient } from "@/lib/supabase/server";
+import { slugify } from "@/lib/slugify";
+import { siteConfig } from "@/config/site";
 import ValidatePieceButton from "../ValidatePieceButton";
 import RefusePieceForm from "../RefusePieceForm";
+import DossierAccessCard from "../DossierAccessCard";
 import { STATUT_PIECE_LABELS, STATUT_PIECE_BADGE_CLASSES, STATUT_PRE_INSCRIPTION_LABELS } from "../statuts";
 
 export const metadata: Metadata = {
@@ -37,7 +40,7 @@ export default async function AdminDossierDetailPage({ params }: PageProps) {
   const { data: preInscription } = await supabase
     .from("pre_inscriptions")
     .select(
-      "id, created_at, eleve_nom, eleve_prenom, classe_souhaitee, serie, parent_nom, parent_prenom, parent_telephone, parent_email, statut, dossier_token"
+      "id, created_at, eleve_nom, eleve_prenom, classe_souhaitee, serie, parent_nom, parent_prenom, parent_telephone, parent_email, statut, dossier_token, dossier_token_expires_at"
     )
     .eq("id", id)
     .maybeSingle();
@@ -60,24 +63,37 @@ export default async function AdminDossierDetailPage({ params }: PageProps) {
   const dossierPieces = (dossierPiecesData ?? []) as DossierPiece[];
 
   // URLs signées (300 s) pour les pièces déposées — générées côté serveur,
-  // bucket "dossier-pieces" privé.
+  // bucket "dossier-pieces" privé. Une seconde URL signée avec téléchargement
+  // forcé (Content-Disposition: attachment) et un nom de fichier convivial.
   const signedUrls = new Map<string, string>();
+  const downloadUrls = new Map<string, string>();
   await Promise.all(
     pieceTypes
       .filter((pt) => pt.depot_en_ligne)
       .map(async (pt) => {
         const piece = dossierPieces.find((dp) => dp.piece_code === pt.code);
         if (!piece?.fichier_path) return;
+
         const { data, error } = await supabase.storage
           .from("dossier-pieces")
           .createSignedUrl(piece.fichier_path, 300);
         if (!error && data) {
           signedUrls.set(pt.code, data.signedUrl);
         }
+
+        const ext = piece.fichier_path.split(".").pop() ?? "";
+        const downloadName = `${slugify(pt.label)}.${ext}`;
+        const { data: downloadData, error: downloadError } = await supabase.storage
+          .from("dossier-pieces")
+          .createSignedUrl(piece.fichier_path, 300, { download: downloadName });
+        if (!downloadError && downloadData) {
+          downloadUrls.set(pt.code, downloadData.signedUrl);
+        }
       })
   );
 
   const statutLabel = STATUT_PRE_INSCRIPTION_LABELS[preInscription.statut] ?? preInscription.statut;
+  const dossierUrl = `${siteConfig.url}/mon-dossier/${preInscription.dossier_token}`;
 
   return (
     <div>
@@ -101,11 +117,21 @@ export default async function AdminDossierDetailPage({ params }: PageProps) {
         </span>
       </div>
 
+      <DossierAccessCard
+        preInscriptionId={preInscription.id}
+        dossierUrl={dossierUrl}
+        expiresAt={preInscription.dossier_token_expires_at}
+        eleveNom={preInscription.eleve_nom}
+        elevePrenom={preInscription.eleve_prenom}
+      />
+
       <div className="flex flex-col gap-4">
         {pieceTypes.map((pieceType) => {
           const piece = dossierPieces.find((dp) => dp.piece_code === pieceType.code);
           const statut = piece?.statut ?? "attendu";
           const signedUrl = signedUrls.get(pieceType.code);
+          const downloadUrl = downloadUrls.get(pieceType.code);
+          const isImage = piece?.fichier_path?.toLowerCase().endsWith(".jpg") ?? false;
 
           return (
             <div key={pieceType.code} className="bg-white border border-neutral-200 rounded-lg p-5">
@@ -135,19 +161,42 @@ export default async function AdminDossierDetailPage({ params }: PageProps) {
                 </p>
               ) : (
                 <div className="mt-3 flex flex-wrap items-start gap-3">
-                  {piece?.fichier_path &&
-                    (signedUrl ? (
-                      <a
-                        href={signedUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 rounded text-sm font-medium text-primary-700 hover:bg-primary-50 transition-colors whitespace-nowrap"
-                      >
-                        Voir le fichier
-                      </a>
-                    ) : (
-                      <p className="text-xs text-red-600">Lien du fichier indisponible.</p>
-                    ))}
+                  {piece?.fichier_path && (
+                    <>
+                      {isImage && signedUrl ? (
+                        <a href={signedUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={signedUrl}
+                            alt={`Aperçu du fichier déposé pour ${pieceType.label}`}
+                            className="w-40 h-auto rounded-lg border border-neutral-200"
+                          />
+                        </a>
+                      ) : signedUrl ? (
+                        <a
+                          href={signedUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 rounded text-sm font-medium text-primary-700 hover:bg-primary-50 transition-colors whitespace-nowrap"
+                        >
+                          Voir le fichier
+                        </a>
+                      ) : null}
+
+                      {downloadUrl && (
+                        <a
+                          href={downloadUrl}
+                          className="px-3 py-1.5 rounded text-sm font-medium text-primary-700 hover:bg-primary-50 transition-colors whitespace-nowrap"
+                        >
+                          Télécharger
+                        </a>
+                      )}
+
+                      {!signedUrl && !downloadUrl && (
+                        <p className="text-xs text-red-600">Lien du fichier indisponible.</p>
+                      )}
+                    </>
+                  )}
 
                   {statut === "recu" && (
                     <>

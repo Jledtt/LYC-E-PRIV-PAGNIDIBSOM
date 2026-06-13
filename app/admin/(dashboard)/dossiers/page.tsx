@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createAuthClient } from "@/lib/supabase/server";
+import DossiersList from "./DossiersList";
 
 export const metadata: Metadata = {
   title: "Dossiers d'inscription",
@@ -65,6 +66,11 @@ export default async function AdminDossiersPage({ searchParams }: PageProps) {
     }
   }
 
+  const rowsWithCounts = rows.map((row) => ({
+    ...row,
+    aVerifier: aVerifierByDossier.get(row.id) ?? 0,
+  }));
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-primary-800 heading-serif mb-6">
@@ -80,68 +86,7 @@ export default async function AdminDossiersPage({ searchParams }: PageProps) {
         </p>
       )}
 
-      <div className="bg-white border border-neutral-200 rounded-lg shadow-sm overflow-x-auto">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-neutral-50 text-neutral-600 uppercase text-xs">
-            <tr>
-              <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3">Élève</th>
-              <th className="px-4 py-3">Classe</th>
-              <th className="px-4 py-3">Parent</th>
-              <th className="px-4 py-3">Téléphone</th>
-              <th className="px-4 py-3">Pièces</th>
-              <th className="px-4 py-3"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-100">
-            {rows.map((row) => {
-              const aVerifier = aVerifierByDossier.get(row.id) ?? 0;
-              return (
-                <tr key={row.id}>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {new Date(row.created_at).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {row.eleve_prenom} {row.eleve_nom}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {row.classe_souhaitee}
-                    {row.serie ? ` (${row.serie})` : ""}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {row.parent_prenom} {row.parent_nom}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">{row.parent_telephone}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    {aVerifier > 0 ? (
-                      <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-accent-100 text-accent-800">
-                        {aVerifier} pièce{aVerifier > 1 ? "s" : ""} à vérifier
-                      </span>
-                    ) : (
-                      <span className="text-neutral-400 text-xs">—</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <Link
-                      href={`/admin/dossiers/${row.id}`}
-                      className="text-primary-700 hover:underline font-medium"
-                    >
-                      Ouvrir
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-            {rows.length === 0 && !error && (
-              <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-neutral-500">
-                  Aucun dossier pour le moment.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      {!error && <DossiersList rows={rowsWithCounts} />}
 
       {totalPages > 1 && (
         <nav aria-label="Pagination" className="flex items-center justify-center gap-2 mt-6">
