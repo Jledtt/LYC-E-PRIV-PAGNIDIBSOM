@@ -66,6 +66,12 @@ export const accueilContent = {
         "Deux filières professionnelles : Génie Civil et Électrotechnique, pour une insertion rapide dans le monde du travail.",
     },
   },
+  admissionPreview: {
+    badge: "Admission",
+    heading: "Comment intégrer Pagnidibsom ?",
+    subheading:
+      "Une procédure simple en quatre étapes, de la pré-inscription en ligne à l'inscription définitive.",
+  },
   reussite: {
     heading: "100 % de réussite au BEPC 2025",
     body: "Toute notre promotion de 3e a réussi le Brevet d'Études du Premier Cycle lors de la session 2025. Ce résultat historique reflète l'engagement quotidien de nos enseignants et de nos élèves.",

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { accueilContent as c } from "@/content/accueil";
+import { admissionContent as a } from "@/content/admission";
 import Button from "@/components/ui/Button";
 
 export const metadata: Metadata = {
@@ -259,6 +260,90 @@ export default function AccueilPage() {
                 Voir le programme <span aria-hidden="true">→</span>
               </Link>
             </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Admission ── */}
+      <section id="admission" className="max-w-6xl mx-auto px-4 py-14 sm:py-20 scroll-mt-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <div>
+            <span className="inline-block bg-primary-100 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-4">
+              {c.admissionPreview.badge}
+            </span>
+            <h2
+              className="text-3xl sm:text-4xl font-bold text-primary-800 mb-3 heading-serif"
+              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+            >
+              {c.admissionPreview.heading}
+            </h2>
+            <p className="text-neutral-600 text-lg leading-relaxed mb-10">
+              {c.admissionPreview.subheading}
+            </p>
+
+            <ol className="flex flex-col gap-8">
+              {a.procedure.etapes.map((etape, i) => (
+                <li key={etape.num} className="relative flex gap-5">
+                  {i < a.procedure.etapes.length - 1 && (
+                    <span
+                      className="absolute left-5 top-10 bottom-[-2rem] w-px bg-primary-100"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <div
+                    className="relative shrink-0 w-10 h-10 rounded-full bg-primary-700 text-white flex items-center justify-center font-bold text-sm"
+                    aria-hidden="true"
+                  >
+                    {etape.num}
+                  </div>
+                  <div className="pt-1">
+                    <h3 className="font-semibold text-primary-800 text-lg mb-1">{etape.title}</h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">{etape.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="bg-primary-800 text-white rounded-2xl p-8 sm:p-10 flex flex-col gap-5 lg:sticky lg:top-24">
+            <h3
+              className="text-2xl sm:text-3xl font-bold heading-serif"
+              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+            >
+              {a.cta.heading}
+            </h3>
+            <p className="text-primary-200 leading-relaxed">{a.cta.body}</p>
+            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+              <Button href="/pre-inscription" variant="secondary" size="lg">
+                {a.cta.button}
+              </Button>
+              <Button
+                href="/admission"
+                variant="outline"
+                size="lg"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Voir le dossier complet
+              </Button>
+            </div>
+            <hr className="border-primary-700 mt-4" />
+            <div>
+              <p className="text-sm text-primary-200 mb-2">Une question avant de vous lancer ?</p>
+              <address className="not-italic flex flex-col gap-1 text-sm">
+                <a
+                  href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
+                  className="font-semibold hover:underline"
+                >
+                  {siteConfig.contact.phone}
+                </a>
+                <a
+                  href={`tel:${siteConfig.contact.phoneAlt.replace(/\s/g, "")}`}
+                  className="font-semibold hover:underline"
+                >
+                  {siteConfig.contact.phoneAlt}
+                </a>
+              </address>
+            </div>
           </div>
         </div>
       </section>
