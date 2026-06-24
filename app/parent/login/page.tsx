@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = { title: "Connexion" };
@@ -12,15 +11,10 @@ export default function ParentLoginPage() {
       <div className="w-full max-w-sm bg-white border border-neutral-200 rounded-lg shadow-sm p-8">
         <h1 className="text-xl font-bold text-primary-800 heading-serif mb-1">Espace Parent</h1>
         <p className="text-sm text-neutral-500 mb-6">
-          Connectez-vous pour suivre le dossier d&rsquo;inscription de votre enfant.
+          Connectez-vous avec votre compte Google pour suivre le dossier d&rsquo;inscription de
+          votre enfant.
         </p>
         <LoginForm />
-        <p className="mt-6 text-sm text-neutral-600 text-center">
-          Pas encore de compte ?{" "}
-          <Link href="/parent/inscription" className="text-primary-700 font-medium underline">
-            Créer un compte
-          </Link>
-        </p>
       </div>
     </div>
   );

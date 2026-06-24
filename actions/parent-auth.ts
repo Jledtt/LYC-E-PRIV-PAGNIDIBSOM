@@ -2,13 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { registerParentSchema, loginParentSchema } from "@/lib/schemas";
 import { createAuthClient, createServerClient } from "@/lib/supabase/server";
-import { siteConfig } from "@/config/site";
-
-export type ParentActionResult =
-  | { success: true }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
 export type RattacherResult =
   | { success: true; eleveNom: string; elevePrenom: string }
@@ -29,76 +23,6 @@ export interface ParentDossier {
   statut: string;
   dossierToken: string | null;
   pieces: ParentDossierPiece[];
-}
-
-/**
- * Crée le compte via le client anon/ssr (pas service_role) : Supabase Auth
- * gère nativement l'envoi et la vérification de l'email de confirmation.
- * Aucune insertion dans profiles ici — elle se fait dans
- * app/parent/callback/route.ts une fois l'email confirmé.
- */
-export async function registerParent(formData: FormData): Promise<ParentActionResult> {
-  const raw = Object.fromEntries(formData.entries());
-  const parsed = registerParentSchema.safeParse(raw);
-
-  if (!parsed.success) {
-    const fieldErrors: Record<string, string[]> = {};
-    for (const [key, msgs] of Object.entries(parsed.error.flatten().fieldErrors)) {
-      if (msgs) fieldErrors[key] = msgs;
-    }
-    return {
-      success: false,
-      error: "Veuillez corriger les erreurs dans le formulaire.",
-      fieldErrors,
-    };
-  }
-
-  const { displayName, email, password } = parsed.data;
-  const supabase = await createAuthClient();
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { display_name: displayName },
-      emailRedirectTo: `${siteConfig.url}/parent/callback`,
-    },
-  });
-
-  if (error) {
-    console.error("[parent-auth] Erreur signUp :", error);
-    return {
-      success: false,
-      error:
-        error.code === "user_already_exists"
-          ? "Un compte existe déjà avec cet email."
-          : "Une erreur est survenue lors de la création du compte. Veuillez réessayer.",
-    };
-  }
-
-  return { success: true };
-}
-
-/** Server Action standard : signInWithPassword via le client cookies (@supabase/ssr). */
-export async function loginParent(formData: FormData): Promise<ParentActionResult> {
-  const raw = Object.fromEntries(formData.entries());
-  const parsed = loginParentSchema.safeParse(raw);
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      error: "Veuillez renseigner un email et un mot de passe valides.",
-    };
-  }
-
-  const supabase = await createAuthClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
-
-  if (error) {
-    return { success: false, error: "Email ou mot de passe incorrect." };
-  }
-
-  redirect("/parent/dashboard");
 }
 
 export async function signOutParent(): Promise<void> {

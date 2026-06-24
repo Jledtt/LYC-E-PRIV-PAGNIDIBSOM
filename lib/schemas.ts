@@ -77,28 +77,3 @@ export const contactSchema = z
   );
 
 export type ContactInput = z.infer<typeof contactSchema>;
-
-/* Espace parent */
-
-export const registerParentSchema = z.object({
-  displayName: z.string().min(2, "Le nom est requis (minimum 2 caractères)").max(100),
-  email: z.string().email("Email invalide").max(200),
-  password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères").max(72),
-});
-
-export type RegisterParentInput = z.infer<typeof registerParentSchema>;
-
-/** Étend registerParentSchema avec la confirmation de mot de passe — usage client uniquement. */
-export const registerParentFormSchema = registerParentSchema
-  .extend({ confirmPassword: z.string() })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Les mots de passe ne correspondent pas",
-    path: ["confirmPassword"],
-  });
-
-export const loginParentSchema = z.object({
-  email: z.string().email("Email invalide"),
-  password: z.string().min(1, "Le mot de passe est requis"),
-});
-
-export type LoginParentInput = z.infer<typeof loginParentSchema>;

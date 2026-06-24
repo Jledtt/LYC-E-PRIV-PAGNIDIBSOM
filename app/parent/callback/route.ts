@@ -2,10 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAuthClient, createServerClient } from "@/lib/supabase/server";
 
 /**
- * Callback de confirmation d'email Supabase (PKCE) pour l'inscription
- * parent. À la différence du back-office /admin (profils créés à la main),
- * le profil 'parent' est créé ici, une fois l'email confirmé — jamais avant
- * (cf. actions/parent-auth.ts -> registerParent).
+ * Callback OAuth Google (PKCE) pour l'espace parent. Google est l'unique
+ * fournisseur d'authentification (pas d'inscription email/password) : le
+ * profil 'parent' est créé ici, au premier login — jamais avant.
  */
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
@@ -17,9 +16,11 @@ export async function GET(request: NextRequest) {
     if (!error && data.user) {
       const serviceClient = createServerClient();
       const displayName =
-        typeof data.user.user_metadata?.display_name === "string"
-          ? data.user.user_metadata.display_name
-          : null;
+        typeof data.user.user_metadata?.full_name === "string"
+          ? data.user.user_metadata.full_name
+          : typeof data.user.user_metadata?.name === "string"
+            ? data.user.user_metadata.name
+            : null;
 
       // ignoreDuplicates : ne touche pas à un profil déjà existant (ex.
       // compte admin) — n'insère que si aucune ligne ne correspond à id.
