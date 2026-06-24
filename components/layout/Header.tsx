@@ -58,7 +58,13 @@ export default function Header() {
         </nav>
 
         {/* CTA desktop */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            href="/parent/login"
+            className="text-sm font-medium text-neutral-600 hover:text-primary-700 transition-colors"
+          >
+            Espace Parent
+          </Link>
           <Link
             href="/pre-inscription"
             className="inline-block bg-accent-500 hover:bg-accent-600 text-neutral-900 text-sm font-bold px-4 py-2 rounded transition-colors"
@@ -113,6 +119,13 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/parent/login"
+              onClick={() => setMenuOpen(false)}
+              className="mt-2 text-center text-primary-700 font-medium px-4 py-2.5 rounded border border-primary-200 hover:bg-primary-50 transition-colors"
+            >
+              Espace Parent
+            </Link>
             <Link
               href="/pre-inscription"
               onClick={() => setMenuOpen(false)}
