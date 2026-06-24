@@ -46,17 +46,28 @@ export async function updateSession(request: NextRequest) {
   const isAdminRoute = pathname.startsWith("/admin");
   const isLoginPage = pathname === "/admin/login";
 
+  // Toute redirection doit repartir de supabaseResponse (pas d'un
+  // NextResponse.redirect() "nu") : c'est lui qui porte les éventuels
+  // Set-Cookie écrits par setAll() ci-dessus (rafraîchissement de session).
+  // Construire une redirection à côté sans copier ces cookies les perdrait
+  // silencieusement — cf. avertissement officiel @supabase/ssr.
+  function redirect(targetPath: string) {
+    const url = request.nextUrl.clone();
+    url.pathname = targetPath;
+    const response = NextResponse.redirect(url);
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      response.cookies.set(cookie);
+    });
+    return response;
+  }
+
   if (isAdminRoute) {
     if (!user && !isLoginPage) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin/login";
-      return NextResponse.redirect(url);
+      return redirect("/admin/login");
     }
 
     if (user && isLoginPage) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
+      return redirect("/admin");
     }
   }
 
@@ -64,9 +75,7 @@ export async function updateSession(request: NextRequest) {
   // middleware.ts) : /parent/login et /parent/callback ne passent jamais
   // par ce middleware.
   if (pathname.startsWith("/parent") && !user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/parent/login";
-    return NextResponse.redirect(url);
+    return redirect("/parent/login");
   }
 
   return supabaseResponse;
