@@ -83,7 +83,12 @@ export default async function AdminPreInscriptionsPage({ searchParams }: PagePro
                   {new Date(row.created_at).toLocaleDateString("fr-FR")}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">
-                  {row.eleve_prenom} {row.eleve_nom}
+                  <Link
+                    href={`/admin/pre-inscriptions/${row.id}`}
+                    className="text-primary-700 font-medium hover:underline"
+                  >
+                    {row.eleve_prenom} {row.eleve_nom}
+                  </Link>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{row.classe_souhaitee}</td>
                 <td className="px-4 py-3">{row.serie ?? "—"}</td>

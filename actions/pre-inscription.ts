@@ -56,6 +56,14 @@ export async function submitPreInscription(formData: FormData): Promise<ActionRe
   const dossierTokenExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 j
   const dossierUrl = `${siteConfig.url}/mon-dossier/${dossierToken}`;
 
+  // parent_nom/parent_prenom/parent_profession (colonnes historiques, NOT
+  // NULL) sont dérivées du père si renseigné, sinon de la mère — la
+  // validation Zod garantit qu'au moins l'un des deux est complet.
+  const hasPere = Boolean(data.pereNom && data.perePrenom);
+  const principal = hasPere
+    ? { nom: data.pereNom!, prenom: data.perePrenom!, profession: data.pereProfession ?? null }
+    : { nom: data.mereNom!, prenom: data.merePrenom!, profession: data.mereProfession ?? null };
+
   let preInscriptionId: string | null = null;
 
   try {
@@ -65,15 +73,27 @@ export async function submitPreInscription(formData: FormData): Promise<ActionRe
         eleve_nom: data.eleveNom,
         eleve_prenom: data.elevePrenom,
         eleve_date_naissance: data.eleveDateNaissance,
+        eleve_lieu_naissance: data.eleveLieuNaissance ?? null,
+        eleve_nationalite: data.eleveNationalite,
         eleve_sexe: data.eleveSexe,
         classe_souhaitee: data.classeSouhaitee,
         serie: data.serie ?? null,
+        classe_redoublee: data.classeRedoublee,
         ecole_precedente: data.ecolePrecedente ?? null,
-        parent_nom: data.parentNom,
-        parent_prenom: data.parentPrenom,
+        secteur: data.secteur ?? null,
+        pere_nom: data.pereNom ?? null,
+        pere_prenom: data.perePrenom ?? null,
+        pere_profession: data.pereProfession ?? null,
+        pere_telephone: data.pereTelephone ?? null,
+        mere_nom: data.mereNom ?? null,
+        mere_prenom: data.merePrenom ?? null,
+        mere_profession: data.mereProfession ?? null,
+        mere_telephone: data.mereTelephone ?? null,
+        parent_nom: principal.nom,
+        parent_prenom: principal.prenom,
         parent_telephone: data.parentTelephone,
         parent_email: data.parentEmail ?? null,
-        parent_profession: data.parentProfession ?? null,
+        parent_profession: principal.profession,
         quartier_ville: data.quartierVille,
         message: data.message ?? null,
         statut: "nouveau",
@@ -142,10 +162,13 @@ export async function submitPreInscription(formData: FormData): Promise<ActionRe
       html: `
         <h2>Nouvelle demande de pré-inscription</h2>
         <p><strong>Élève :</strong> ${data.elevePrenom} ${data.eleveNom}, classe souhaitée : ${data.classeSouhaitee}${data.serie ? " série " + data.serie : ""}</p>
-        <p><strong>Parent :</strong> ${data.parentPrenom} ${data.parentNom}</p>
-        <p><strong>Téléphone :</strong> ${data.parentTelephone}</p>
+        <p><strong>Né(e) le :</strong> ${data.eleveDateNaissance}${data.eleveLieuNaissance ? ` à ${data.eleveLieuNaissance}` : ""} — Nationalité : ${data.eleveNationalite}</p>
+        <p><strong>Classe redoublée :</strong> ${data.classeRedoublee ? "Oui" : "Non"}</p>
+        ${data.pereNom ? `<p><strong>Père :</strong> ${data.perePrenom ?? ""} ${data.pereNom}${data.pereProfession ? ` — ${data.pereProfession}` : ""}${data.pereTelephone ? ` — ${data.pereTelephone}` : ""}</p>` : ""}
+        ${data.mereNom ? `<p><strong>Mère/Tutrice :</strong> ${data.merePrenom ?? ""} ${data.mereNom}${data.mereProfession ? ` — ${data.mereProfession}` : ""}${data.mereTelephone ? ` — ${data.mereTelephone}` : ""}</p>` : ""}
+        <p><strong>Contact principal :</strong> ${data.parentTelephone}</p>
         ${data.parentEmail ? `<p><strong>Email :</strong> ${data.parentEmail}</p>` : ""}
-        <p><strong>Quartier/Ville :</strong> ${data.quartierVille}</p>
+        <p><strong>Quartier/Ville :</strong> ${data.quartierVille}${data.secteur ? ` (secteur ${data.secteur})` : ""}</p>
         ${data.message ? `<p><strong>Message :</strong> ${data.message}</p>` : ""}
       `,
     });

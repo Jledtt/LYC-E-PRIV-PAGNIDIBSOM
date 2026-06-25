@@ -309,6 +309,60 @@ export default function PreInscriptionForm() {
           )}
         </div>
 
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField
+            id="eleveLieuNaissance"
+            label="Lieu de naissance"
+            error={getError(fieldErrors, "eleveLieuNaissance")}
+          >
+            <input
+              id="eleveLieuNaissance"
+              name="eleveLieuNaissance"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+
+          <FormField
+            id="eleveNationalite"
+            label="Nationalité"
+            error={getError(fieldErrors, "eleveNationalite")}
+          >
+            <input
+              id="eleveNationalite"
+              name="eleveNationalite"
+              type="text"
+              defaultValue="Burkinabè"
+              className={inputClasses}
+            />
+          </FormField>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField
+            id="classeRedoublee"
+            label="Classe déjà redoublée ?"
+            error={getError(fieldErrors, "classeRedoublee")}
+            hint="L'élève a-t-il déjà redoublé la classe demandée ?"
+          >
+            <select id="classeRedoublee" name="classeRedoublee" className={selectClasses} defaultValue="non">
+              <option value="non">Non</option>
+              <option value="oui">Oui</option>
+            </select>
+          </FormField>
+
+          <FormField id="secteur" label="Secteur" error={getError(fieldErrors, "secteur")}>
+            <input
+              id="secteur"
+              name="secteur"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+        </div>
+
         <FormField
           id="ecolePrecedente"
           label="École précédente"
@@ -324,39 +378,111 @@ export default function PreInscriptionForm() {
         </FormField>
       </fieldset>
 
-      {/* Section Parent */}
+      {/* Section Père */}
       <fieldset className="flex flex-col gap-5">
         <legend className="text-lg font-bold text-primary-800 pb-1 border-b border-neutral-200 w-full">
-          Informations du parent / tuteur
+          Informations du père
         </legend>
+        <p className="text-xs text-neutral-500 -mt-2">
+          Renseignez au moins les informations du père ou de la mère/tutrice ci-dessous.
+        </p>
+        {getError(fieldErrors, "pereNom") && (
+          <p role="alert" className="text-xs text-red-600">
+            {getError(fieldErrors, "pereNom")}
+          </p>
+        )}
 
         <div className="grid sm:grid-cols-2 gap-5">
-          <FormField id="parentNom" label="Nom" required error={getError(fieldErrors, "parentNom")}>
-            <input
-              id="parentNom"
-              name="parentNom"
-              type="text"
-              required
-              className={inputClasses}
-              aria-invalid={!!getError(fieldErrors, "parentNom")}
-              aria-describedby={getError(fieldErrors, "parentNom") ? "parentNom-error" : undefined}
-            />
+          <FormField id="pereNom" label="Nom" error={getError(fieldErrors, "pereNom")}>
+            <input id="pereNom" name="pereNom" type="text" className={inputClasses} placeholder="Facultatif" />
           </FormField>
 
-          <FormField id="parentPrenom" label="Prénom" required error={getError(fieldErrors, "parentPrenom")}>
+          <FormField id="perePrenom" label="Prénom" error={getError(fieldErrors, "perePrenom")}>
             <input
-              id="parentPrenom"
-              name="parentPrenom"
+              id="perePrenom"
+              name="perePrenom"
               type="text"
-              required
               className={inputClasses}
-              aria-invalid={!!getError(fieldErrors, "parentPrenom")}
-              aria-describedby={
-                getError(fieldErrors, "parentPrenom") ? "parentPrenom-error" : undefined
-              }
+              placeholder="Facultatif"
             />
           </FormField>
         </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField id="pereProfession" label="Profession" error={getError(fieldErrors, "pereProfession")}>
+            <input
+              id="pereProfession"
+              name="pereProfession"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+
+          <FormField id="pereTelephone" label="Téléphone" error={getError(fieldErrors, "pereTelephone")}>
+            <input
+              id="pereTelephone"
+              name="pereTelephone"
+              type="tel"
+              className={inputClasses}
+              placeholder="+226 00 00 00 00 (facultatif)"
+              aria-invalid={!!getError(fieldErrors, "pereTelephone")}
+            />
+          </FormField>
+        </div>
+      </fieldset>
+
+      {/* Section Mère / tutrice */}
+      <fieldset className="flex flex-col gap-5">
+        <legend className="text-lg font-bold text-primary-800 pb-1 border-b border-neutral-200 w-full">
+          Informations de la mère / tutrice
+        </legend>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField id="mereNom" label="Nom" error={getError(fieldErrors, "mereNom")}>
+            <input id="mereNom" name="mereNom" type="text" className={inputClasses} placeholder="Facultatif" />
+          </FormField>
+
+          <FormField id="merePrenom" label="Prénom" error={getError(fieldErrors, "merePrenom")}>
+            <input
+              id="merePrenom"
+              name="merePrenom"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField id="mereProfession" label="Profession" error={getError(fieldErrors, "mereProfession")}>
+            <input
+              id="mereProfession"
+              name="mereProfession"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+
+          <FormField id="mereTelephone" label="Téléphone" error={getError(fieldErrors, "mereTelephone")}>
+            <input
+              id="mereTelephone"
+              name="mereTelephone"
+              type="tel"
+              className={inputClasses}
+              placeholder="+226 00 00 00 00 (facultatif)"
+              aria-invalid={!!getError(fieldErrors, "mereTelephone")}
+            />
+          </FormField>
+        </div>
+      </fieldset>
+
+      {/* Section Contact principal */}
+      <fieldset className="flex flex-col gap-5">
+        <legend className="text-lg font-bold text-primary-800 pb-1 border-b border-neutral-200 w-full">
+          Contact principal (suivi du dossier)
+        </legend>
 
         <div className="grid sm:grid-cols-2 gap-5">
           <FormField
@@ -364,7 +490,7 @@ export default function PreInscriptionForm() {
             label="Téléphone"
             required
             error={getError(fieldErrors, "parentTelephone")}
-            hint="Canal principal de contact"
+            hint="Canal principal de contact (WhatsApp)"
           >
             <input
               id="parentTelephone"
@@ -402,41 +528,25 @@ export default function PreInscriptionForm() {
           </FormField>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-5">
-          <FormField
-            id="parentProfession"
-            label="Profession"
-            error={getError(fieldErrors, "parentProfession")}
-          >
-            <input
-              id="parentProfession"
-              name="parentProfession"
-              type="text"
-              className={inputClasses}
-              placeholder="Facultatif"
-            />
-          </FormField>
-
-          <FormField
+        <FormField
+          id="quartierVille"
+          label="Quartier / Ville"
+          required
+          error={getError(fieldErrors, "quartierVille")}
+        >
+          <input
             id="quartierVille"
-            label="Quartier / Ville"
+            name="quartierVille"
+            type="text"
             required
-            error={getError(fieldErrors, "quartierVille")}
-          >
-            <input
-              id="quartierVille"
-              name="quartierVille"
-              type="text"
-              required
-              className={inputClasses}
-              placeholder="Ex : Secteur 12, Ouagadougou"
-              aria-invalid={!!getError(fieldErrors, "quartierVille")}
-              aria-describedby={
-                getError(fieldErrors, "quartierVille") ? "quartierVille-error" : undefined
-              }
-            />
-          </FormField>
-        </div>
+            className={inputClasses}
+            placeholder="Ex : Secteur 12, Ouagadougou"
+            aria-invalid={!!getError(fieldErrors, "quartierVille")}
+            aria-describedby={
+              getError(fieldErrors, "quartierVille") ? "quartierVille-error" : undefined
+            }
+          />
+        </FormField>
       </fieldset>
 
       {/* Message libre */}

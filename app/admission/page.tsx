@@ -139,12 +139,6 @@ export default function AdmissionPage() {
                   {siteConfig.contact.phoneAlt}
                 </a>
               </address>
-              <Link
-                href="/tarifs"
-                className="inline-flex items-center gap-1 mt-5 text-primary-700 font-semibold text-sm hover:underline"
-              >
-                Voir le détail des tarifs <span aria-hidden="true">→</span>
-              </Link>
             </div>
           </div>
         </div>

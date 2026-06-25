@@ -6,7 +6,6 @@ const footerNav = [
   { href: "/ecole", label: "L'École" },
   { href: "/formations", label: "Formations" },
   { href: "/admission", label: "Admission" },
-  { href: "/tarifs", label: "Tarifs" },
   { href: "/pre-inscription", label: "Pré-inscription" },
   { href: "/contact", label: "Contact" },
   { href: "/actualites", label: "Actualités" },

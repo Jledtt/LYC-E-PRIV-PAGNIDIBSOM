@@ -11,7 +11,6 @@ const navLinks = [
   { href: "/ecole", label: "L'École" },
   { href: "/formations", label: "Formations" },
   { href: "/admission", label: "Admission" },
-  { href: "/tarifs", label: "Tarifs" },
   { href: "/actualites", label: "Actualités" },
   { href: "/contact", label: "Contact" },
 ];

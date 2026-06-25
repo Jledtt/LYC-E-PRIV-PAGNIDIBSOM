@@ -56,7 +56,7 @@ export const admissionContent = {
   },
   frais: {
     heading: "Frais de scolarité",
-    note: "Les frais sont détaillés sur la page Tarifs. Pour toute question, n'hésitez pas à nous appeler.",
+    note: "Pour le détail des frais de scolarité, n'hésitez pas à nous appeler.",
     contact: "Appelez le 72 81 61 59 ou 78 42 62 06",
   },
   cta: {
