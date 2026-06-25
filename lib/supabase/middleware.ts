@@ -45,6 +45,11 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isAdminRoute = pathname.startsWith("/admin");
   const isLoginPage = pathname === "/admin/login";
+  // Pages admin accessibles sans session (réinitialisation mot de passe)
+  const isAdminPublicPage =
+    isLoginPage ||
+    pathname === "/admin/mot-de-passe-oublie" ||
+    pathname === "/admin/reinitialiser-mot-de-passe";
 
   // Toute redirection doit repartir de supabaseResponse (pas d'un
   // NextResponse.redirect() "nu") : c'est lui qui porte les éventuels
@@ -62,7 +67,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isAdminRoute) {
-    if (!user && !isLoginPage) {
+    if (!user && !isAdminPublicPage) {
       return redirect("/admin/login");
     }
 

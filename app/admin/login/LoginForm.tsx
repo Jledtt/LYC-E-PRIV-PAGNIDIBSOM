@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import FormField, { inputClasses } from "@/components/ui/FormField";
 
@@ -80,6 +81,13 @@ export default function LoginForm() {
       >
         {isPending ? "Connexion en cours..." : "Se connecter"}
       </button>
+
+      <Link
+        href="/admin/mot-de-passe-oublie"
+        className="text-sm text-neutral-500 hover:text-neutral-700 text-center"
+      >
+        Mot de passe oublié ?
+      </Link>
     </form>
   );
 }
