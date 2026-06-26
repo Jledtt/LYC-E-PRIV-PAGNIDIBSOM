@@ -20,6 +20,7 @@ export interface ParentDossier {
   eleveNom: string;
   elevePrenom: string;
   classeSouhaitee: string;
+  classeActuelle: string | null;
   statut: string;
   dossierToken: string | null;
   pieces: ParentDossierPiece[];
@@ -120,7 +121,7 @@ export async function getParentDossiers(): Promise<ParentDossier[]> {
 
   const { data: preInscriptions, error } = await supabase
     .from("pre_inscriptions")
-    .select("id, eleve_nom, eleve_prenom, classe_souhaitee, statut, dossier_token");
+    .select("id, eleve_nom, eleve_prenom, classe_souhaitee, classe_actuelle, statut, dossier_token");
 
   if (error) {
     console.error("[parent-auth] Erreur lecture pre_inscriptions :", error);
@@ -145,6 +146,7 @@ export async function getParentDossiers(): Promise<ParentDossier[]> {
     eleveNom: p.eleve_nom,
     elevePrenom: p.eleve_prenom,
     classeSouhaitee: p.classe_souhaitee,
+    classeActuelle: p.classe_actuelle ?? null,
     statut: p.statut,
     dossierToken: p.dossier_token,
     pieces: (dossierPieces ?? [])

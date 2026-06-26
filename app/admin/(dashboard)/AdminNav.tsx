@@ -9,6 +9,8 @@ const navLinks = [
   { href: "/admin/dossiers", label: "Dossiers" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/actualites", label: "Actualités" },
+  { href: "/admin/emploi-du-temps", label: "Emploi du temps" },
+  { href: "/admin/calendrier-devoirs", label: "Calendrier devoirs" },
 ];
 
 export default function AdminNav() {

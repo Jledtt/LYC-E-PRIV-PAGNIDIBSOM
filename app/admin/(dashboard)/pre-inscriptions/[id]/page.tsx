@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createAuthClient } from "@/lib/supabase/server";
 import StatusSelect from "../StatusSelect";
+import ClasseActuelleSelect from "../ClasseActuelleSelect";
 import { STATUT_OPTIONS } from "../statuts";
 
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ interface PreInscriptionDetail {
   quartier_ville: string;
   message: string | null;
   statut: string;
+  classe_actuelle: string | null;
 }
 
 interface PageProps {
@@ -66,7 +68,7 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
   const { data } = await supabase
     .from("pre_inscriptions")
     .select(
-      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_telephone, mere_nom, mere_prenom, mere_profession, mere_telephone, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut"
+      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_telephone, mere_nom, mere_prenom, mere_profession, mere_telephone, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut, classe_actuelle"
     )
     .eq("id", id)
     .maybeSingle();
@@ -99,7 +101,10 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
             {new Date(p.created_at).toLocaleDateString("fr-FR")}
           </p>
         </div>
-        <StatusSelect id={p.id} currentStatut={p.statut} />
+        <div className="flex flex-wrap gap-3 items-start">
+          <StatusSelect id={p.id} currentStatut={p.statut} />
+          <ClasseActuelleSelect id={p.id} currentClasse={p.classe_actuelle} />
+        </div>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
