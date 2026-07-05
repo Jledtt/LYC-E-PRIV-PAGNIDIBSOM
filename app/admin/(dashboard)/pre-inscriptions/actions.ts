@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAuthClient, createServerClient } from "@/lib/supabase/server";
+import { createAuthClient } from "@/lib/supabase/server";
 import { STATUTS_VALIDES } from "./statuts";
 import { CLASSES } from "@/lib/scolarite";
 
@@ -50,8 +50,7 @@ export async function updateClasseActuelle(
     .maybeSingle();
   if (profile?.role !== "admin") return { success: false, error: "Accès refusé." };
 
-  const supabase = createServerClient();
-  const { error } = await supabase
+  const { error } = await authClient
     .from("pre_inscriptions")
     .update({ classe_actuelle: classeActuelle })
     .eq("id", id);
