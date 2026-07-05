@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAuthClient, createServerClient } from "@/lib/supabase/server";
+import { createAuthClient } from "@/lib/supabase/server";
 import { CLASSES, TYPES_DEVOIR, type Classe, type TypeDevoir } from "@/lib/scolarite";
 
 export type ActionResult = { success: true } | { success: false; error: string };
@@ -39,7 +39,7 @@ export async function ajouterDevoir(payload: AjouterDevoirPayload): Promise<Acti
   if (!(TYPES_DEVOIR as readonly string[]).includes(payload.type))
     return { success: false, error: "Type invalide." };
 
-  const supabase = createServerClient();
+  const supabase = await createAuthClient();
   const { error } = await supabase.from("calendrier_devoirs").insert({
     classe: payload.classe,
     date_devoir: payload.date_devoir,
@@ -61,7 +61,7 @@ export async function ajouterDevoir(payload: AjouterDevoirPayload): Promise<Acti
 export async function supprimerDevoir(id: string): Promise<ActionResult> {
   if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
 
-  const supabase = createServerClient();
+  const supabase = await createAuthClient();
   const { error } = await supabase.from("calendrier_devoirs").delete().eq("id", id);
 
   if (error) {

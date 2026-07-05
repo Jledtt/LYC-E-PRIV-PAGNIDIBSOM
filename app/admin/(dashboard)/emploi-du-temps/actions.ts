@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createAuthClient, createServerClient } from "@/lib/supabase/server";
+import { createAuthClient } from "@/lib/supabase/server";
 import { CLASSES, JOURS, CRENEAUX, type Classe, type Jour, type Creneau } from "@/lib/scolarite";
 
 export type ActionResult = { success: true } | { success: false; error: string };
@@ -40,7 +40,7 @@ export async function upsertCellule(payload: UpsertCellulesPayload): Promise<Act
     return { success: false, error: "Créneau invalide." };
   if (!payload.matiere.trim()) return { success: false, error: "La matière est requise." };
 
-  const supabase = createServerClient();
+  const supabase = await createAuthClient();
   const { error } = await supabase.from("emploi_du_temps").upsert(
     {
       classe: payload.classe,
@@ -65,7 +65,7 @@ export async function upsertCellule(payload: UpsertCellulesPayload): Promise<Act
 export async function supprimerCellule(id: string): Promise<ActionResult> {
   if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
 
-  const supabase = createServerClient();
+  const supabase = await createAuthClient();
   const { error } = await supabase.from("emploi_du_temps").delete().eq("id", id);
 
   if (error) {
