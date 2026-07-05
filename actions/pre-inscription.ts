@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { headers } from "next/headers";
 import { preInscriptionSchema } from "@/lib/schemas";
 import { createServerClient } from "@/lib/supabase/server";
-import { sendNotificationEmail } from "@/lib/email";
+import { sendConfirmationPreInscription, sendNotificationAdmin } from "@/lib/email/send";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { siteConfig } from "@/config/site";
 
@@ -154,26 +154,32 @@ export async function submitPreInscription(formData: FormData): Promise<ActionRe
     }
   }
 
-  // L'email est best-effort : son échec ne doit JAMAIS faire échouer
-  // une inscription déjà enregistrée en base.
-  try {
-    await sendNotificationEmail({
-      subject: `Nouvelle pré-inscription — ${data.elevePrenom} ${data.eleveNom}`,
-      html: `
-        <h2>Nouvelle demande de pré-inscription</h2>
-        <p><strong>Élève :</strong> ${data.elevePrenom} ${data.eleveNom}, classe souhaitée : ${data.classeSouhaitee}${data.serie ? " série " + data.serie : ""}</p>
-        <p><strong>Né(e) le :</strong> ${data.eleveDateNaissance}${data.eleveLieuNaissance ? ` à ${data.eleveLieuNaissance}` : ""} — Nationalité : ${data.eleveNationalite}</p>
-        <p><strong>Classe redoublée :</strong> ${data.classeRedoublee ? "Oui" : "Non"}</p>
-        ${data.pereNom ? `<p><strong>Père :</strong> ${data.perePrenom ?? ""} ${data.pereNom}${data.pereProfession ? ` — ${data.pereProfession}` : ""}${data.pereTelephone ? ` — ${data.pereTelephone}` : ""}</p>` : ""}
-        ${data.mereNom ? `<p><strong>Mère/Tutrice :</strong> ${data.merePrenom ?? ""} ${data.mereNom}${data.mereProfession ? ` — ${data.mereProfession}` : ""}${data.mereTelephone ? ` — ${data.mereTelephone}` : ""}</p>` : ""}
-        <p><strong>Contact principal :</strong> ${data.parentTelephone}</p>
-        ${data.parentEmail ? `<p><strong>Email :</strong> ${data.parentEmail}</p>` : ""}
-        <p><strong>Quartier/Ville :</strong> ${data.quartierVille}${data.secteur ? ` (secteur ${data.secteur})` : ""}</p>
-        ${data.message ? `<p><strong>Message :</strong> ${data.message}</p>` : ""}
-      `,
+  // Les emails sont best-effort : leur échec ne doit JAMAIS faire échouer
+  // une inscription déjà enregistrée en base (sendXxx ne throw jamais).
+  const classeLabel = data.classeSouhaitee + (data.serie ? ` (série ${data.serie})` : "");
+  const nomParent = `${principal.prenom} ${principal.nom}`;
+
+  if (preInscriptionId) {
+    await sendNotificationAdmin({
+      nomEleve: data.eleveNom,
+      prenomEleve: data.elevePrenom,
+      classesouhaitee: classeLabel,
+      nomParent,
+      telephone: data.parentTelephone,
+      email: data.parentEmail ?? null,
+      dossierId: preInscriptionId,
     });
-  } catch (err) {
-    console.error("[pre-inscription] Envoi email échoué (non bloquant) :", err);
+  }
+
+  if (data.parentEmail) {
+    await sendConfirmationPreInscription({
+      to: data.parentEmail,
+      nomEleve: data.eleveNom,
+      prenomEleve: data.elevePrenom,
+      classesouhaitee: classeLabel,
+      nomParent,
+      dossierToken,
+    });
   }
 
   return { success: true, dossierUrl };

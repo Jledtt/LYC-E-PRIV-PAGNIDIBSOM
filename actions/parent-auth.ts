@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createAuthClient, createServerClient } from "@/lib/supabase/server";
+import { sendBienvenueEspaceParent } from "@/lib/email/send";
 
 export type RattacherResult =
   | { success: true; eleveNom: string; elevePrenom: string }
@@ -56,7 +57,7 @@ export async function rattacherEleve(token: string): Promise<RattacherResult> {
 
   const { data: preInscription, error } = await supabase
     .from("pre_inscriptions")
-    .select("id, eleve_nom, eleve_prenom")
+    .select("id, eleve_nom, eleve_prenom, classe_actuelle")
     .eq("dossier_token", token.trim())
     .maybeSingle();
 
@@ -97,6 +98,24 @@ export async function rattacherEleve(token: string): Promise<RattacherResult> {
 
   revalidatePath("/parent/rattacher");
   revalidatePath("/parent/dashboard");
+
+  // Email best-effort : n'échoue jamais le rattachement (sendXxx ne throw
+  // pas). user.email vient de la session Google OAuth du parent.
+  if (user.email) {
+    const { data: profile } = await authClient
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    await sendBienvenueEspaceParent({
+      to: user.email,
+      nomParent: profile?.display_name ?? user.email,
+      prenomEleve: preInscription.eleve_prenom,
+      nomEleve: preInscription.eleve_nom,
+      classeActuelle: preInscription.classe_actuelle ?? null,
+    });
+  }
 
   return {
     success: true,
