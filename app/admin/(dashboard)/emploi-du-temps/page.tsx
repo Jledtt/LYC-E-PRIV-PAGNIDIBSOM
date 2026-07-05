@@ -45,21 +45,32 @@ export default async function EmploiDuTempsPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {CLASSES.map((c) => (
-          <Link
-            key={c}
-            href={`/admin/emploi-du-temps?classe=${encodeURIComponent(c)}`}
-            className={[
-              "px-3 py-1.5 rounded text-sm font-medium transition-colors",
-              c === classe
-                ? "bg-primary-800 text-white"
-                : "bg-white border border-neutral-300 text-neutral-700 hover:border-primary-600 hover:text-primary-700",
-            ].join(" ")}
-          >
-            {c}
-          </Link>
-        ))}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          {CLASSES.map((c) => (
+            <Link
+              key={c}
+              href={`/admin/emploi-du-temps?classe=${encodeURIComponent(c)}`}
+              className={[
+                "px-3 py-1.5 rounded text-sm font-medium transition-colors",
+                c === classe
+                  ? "bg-primary-800 text-white"
+                  : "bg-white border border-neutral-300 text-neutral-700 hover:border-primary-600 hover:text-primary-700",
+              ].join(" ")}
+            >
+              {c}
+            </Link>
+          ))}
+        </div>
+
+        <a
+          href={`/api/pdf/emploi-du-temps?classe=${encodeURIComponent(classe)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-3 py-1.5 rounded text-sm font-medium border border-primary-700 text-primary-700 hover:bg-primary-50 transition-colors"
+        >
+          📄 PDF
+        </a>
       </div>
 
       <EmploiDuTempsGrid classe={classe} cellules={cellules} />

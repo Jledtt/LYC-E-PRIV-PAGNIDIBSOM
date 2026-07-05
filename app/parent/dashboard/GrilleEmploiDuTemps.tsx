@@ -10,10 +10,11 @@ export interface EdtRow {
 }
 
 interface Props {
+  classe: string;
   rows: EdtRow[];
 }
 
-export default function GrilleEmploiDuTemps({ rows }: Props) {
+export default function GrilleEmploiDuTemps({ classe, rows }: Props) {
   if (rows.length === 0) {
     return (
       <p className="text-sm text-neutral-500 italic">
@@ -73,28 +74,39 @@ export default function GrilleEmploiDuTemps({ rows }: Props) {
   }
 
   return (
-    <div className="overflow-x-auto rounded border border-neutral-200">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-primary-800 text-white">
-            <th className="px-2 py-2 text-left text-xs font-semibold whitespace-nowrap sticky left-0 bg-primary-800 min-w-[60px]">
-              Créneau
-            </th>
-            {JOURS.map((jour) => (
-              <th
-                key={jour}
-                className="px-2 py-2 text-center text-xs font-semibold capitalize min-w-[72px]"
-              >
-                {jour.slice(0, 3)}.
+    <div className="flex flex-col gap-3">
+      <div className="overflow-x-auto rounded border border-neutral-200">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-primary-800 text-white">
+              <th className="px-2 py-2 text-left text-xs font-semibold whitespace-nowrap sticky left-0 bg-primary-800 min-w-[60px]">
+                Créneau
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white">
-          {renderSection(CRENEAUX_MATIN, "Matin")}
-          {renderSection(CRENEAUX_APREM, "Après-midi")}
-        </tbody>
-      </table>
+              {JOURS.map((jour) => (
+                <th
+                  key={jour}
+                  className="px-2 py-2 text-center text-xs font-semibold capitalize min-w-[72px]"
+                >
+                  {jour.slice(0, 3)}.
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white">
+            {renderSection(CRENEAUX_MATIN, "Matin")}
+            {renderSection(CRENEAUX_APREM, "Après-midi")}
+          </tbody>
+        </table>
+      </div>
+
+      <a
+        href={`/api/pdf/emploi-du-temps?classe=${encodeURIComponent(classe)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="self-start text-sm font-medium text-primary-700 hover:text-primary-900 underline"
+      >
+        📄 Télécharger PDF
+      </a>
     </div>
   );
 }

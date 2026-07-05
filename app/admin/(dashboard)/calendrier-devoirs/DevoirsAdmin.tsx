@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ajouterDevoir, supprimerDevoir } from "./actions";
-import { TYPES_DEVOIR, type Classe, type TypeDevoir } from "@/lib/scolarite";
+import { TYPES_DEVOIR, TRIMESTRE_LABELS, type Classe, type Trimestre, type TypeDevoir } from "@/lib/scolarite";
 import { inputClasses } from "@/components/ui/FormField";
 
 export interface DevoirRow {
@@ -17,6 +17,7 @@ export interface DevoirRow {
 
 interface Props {
   classe: Classe;
+  trimestre: Trimestre;
   devoirs: DevoirRow[];
 }
 
@@ -35,7 +36,7 @@ function groupByMonth(devoirs: DevoirRow[]): Array<{ label: string; items: Devoi
 const selectClass =
   "w-full border border-neutral-300 rounded px-3 py-2.5 text-neutral-900 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition";
 
-export default function DevoirsAdmin({ classe, devoirs }: Props) {
+export default function DevoirsAdmin({ classe, trimestre, devoirs }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
@@ -192,7 +193,9 @@ export default function DevoirsAdmin({ classe, devoirs }: Props) {
       </section>
 
       <section className="bg-white border border-neutral-200 rounded-lg p-5">
-        <h2 className="font-semibold text-primary-800 mb-4">Devoirs et compositions</h2>
+        <h2 className="font-semibold text-primary-800 mb-4">
+          Devoirs et compositions — {TRIMESTRE_LABELS[trimestre]}
+        </h2>
 
         {deleteError && (
           <div

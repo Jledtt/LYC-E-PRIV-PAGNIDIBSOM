@@ -176,7 +176,10 @@ export default async function ParentDashboardPage() {
           <div className="border-t border-neutral-200 pt-4">
             <h3 className="text-sm font-semibold text-neutral-800 mb-3">Emploi du temps</h3>
             {d.classeActuelle ? (
-              <GrilleEmploiDuTemps rows={edtParClasse[d.classeActuelle] ?? []} />
+              <GrilleEmploiDuTemps
+                classe={d.classeActuelle}
+                rows={edtParClasse[d.classeActuelle] ?? []}
+              />
             ) : (
               <p className="text-sm text-neutral-500 italic">
                 La classe de votre enfant n&rsquo;a pas encore été assignée par
@@ -189,7 +192,10 @@ export default async function ParentDashboardPage() {
           <div className="border-t border-neutral-200 pt-4">
             <h3 className="text-sm font-semibold text-neutral-800 mb-3">Devoirs à venir</h3>
             {d.classeActuelle ? (
-              <ListeDevoirs devoirs={devoirsParClasse[d.classeActuelle] ?? []} />
+              <ListeDevoirs
+                classe={d.classeActuelle}
+                devoirs={devoirsParClasse[d.classeActuelle] ?? []}
+              />
             ) : (
               <p className="text-sm text-neutral-500 italic">
                 La classe de votre enfant n&rsquo;a pas encore été assignée par
