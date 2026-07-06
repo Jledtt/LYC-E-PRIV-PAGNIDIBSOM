@@ -29,13 +29,16 @@ export async function sendConfirmationPreInscription(
     });
 
     if (error) {
-      console.error("[email] Erreur envoi confirmation pré-inscription :", error);
+      console.error(
+        `[email] Erreur envoi confirmation pré-inscription : code=${error.name} message=${error.message}`
+      );
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    console.error("[email] Erreur inattendue confirmation pré-inscription :", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[email] Erreur inattendue confirmation pré-inscription : ${message}`);
     return { success: false };
   }
 }
@@ -53,13 +56,16 @@ export async function sendNotificationAdmin(
     });
 
     if (error) {
-      console.error("[email] Erreur envoi notification admin :", error);
+      console.error(
+        `[email] Erreur envoi notification admin (to=${ADMIN_EMAIL}) : code=${error.name} message=${error.message}`
+      );
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    console.error("[email] Erreur inattendue notification admin :", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[email] Erreur inattendue notification admin : ${message}`);
     return { success: false };
   }
 }
@@ -77,13 +83,16 @@ export async function sendChangementStatut(
     });
 
     if (error) {
-      console.error("[email] Erreur envoi changement de statut :", error);
+      console.error(
+        `[email] Erreur envoi changement de statut : code=${error.name} message=${error.message}`
+      );
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    console.error("[email] Erreur inattendue changement de statut :", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[email] Erreur inattendue changement de statut : ${message}`);
     return { success: false };
   }
 }
@@ -101,13 +110,16 @@ export async function sendBienvenueEspaceParent(
     });
 
     if (error) {
-      console.error("[email] Erreur envoi bienvenue espace parent :", error);
+      console.error(
+        `[email] Erreur envoi bienvenue espace parent : code=${error.name} message=${error.message}`
+      );
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    console.error("[email] Erreur inattendue bienvenue espace parent :", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[email] Erreur inattendue bienvenue espace parent : ${message}`);
     return { success: false };
   }
 }
