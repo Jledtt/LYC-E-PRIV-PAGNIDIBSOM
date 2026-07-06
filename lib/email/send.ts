@@ -21,6 +21,7 @@ export async function sendConfirmationPreInscription(
 ): Promise<SendResult> {
   try {
     const { subject, html } = confirmationPreInscription(params);
+    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,
@@ -29,16 +30,14 @@ export async function sendConfirmationPreInscription(
     });
 
     if (error) {
-      console.error(
-        `[email] Erreur envoi confirmation pré-inscription : code=${error.name} message=${error.message}`
-      );
+      console.error("[email] Erreur complète:", JSON.stringify(error, null, 2));
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[email] Erreur inattendue confirmation pré-inscription : ${message}`);
+    const serialized = err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err;
+    console.error("[email] Erreur complète:", JSON.stringify(serialized, null, 2));
     return { success: false };
   }
 }
@@ -48,6 +47,7 @@ export async function sendNotificationAdmin(
 ): Promise<SendResult> {
   try {
     const { subject, html } = notificationAdmin(params);
+    console.log("[email] Envoi vers:", ADMIN_EMAIL, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: ADMIN_EMAIL,
@@ -56,16 +56,14 @@ export async function sendNotificationAdmin(
     });
 
     if (error) {
-      console.error(
-        `[email] Erreur envoi notification admin (to=${ADMIN_EMAIL}) : code=${error.name} message=${error.message}`
-      );
+      console.error("[email] Erreur complète:", JSON.stringify(error, null, 2));
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[email] Erreur inattendue notification admin : ${message}`);
+    const serialized = err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err;
+    console.error("[email] Erreur complète:", JSON.stringify(serialized, null, 2));
     return { success: false };
   }
 }
@@ -75,6 +73,7 @@ export async function sendChangementStatut(
 ): Promise<SendResult> {
   try {
     const { subject, html } = changementStatut(params);
+    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,
@@ -83,16 +82,14 @@ export async function sendChangementStatut(
     });
 
     if (error) {
-      console.error(
-        `[email] Erreur envoi changement de statut : code=${error.name} message=${error.message}`
-      );
+      console.error("[email] Erreur complète:", JSON.stringify(error, null, 2));
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[email] Erreur inattendue changement de statut : ${message}`);
+    const serialized = err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err;
+    console.error("[email] Erreur complète:", JSON.stringify(serialized, null, 2));
     return { success: false };
   }
 }
@@ -102,6 +99,7 @@ export async function sendBienvenueEspaceParent(
 ): Promise<SendResult> {
   try {
     const { subject, html } = bienvenueEspaceParent(params);
+    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,
@@ -110,16 +108,14 @@ export async function sendBienvenueEspaceParent(
     });
 
     if (error) {
-      console.error(
-        `[email] Erreur envoi bienvenue espace parent : code=${error.name} message=${error.message}`
-      );
+      console.error("[email] Erreur complète:", JSON.stringify(error, null, 2));
       return { success: false };
     }
 
     return { success: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`[email] Erreur inattendue bienvenue espace parent : ${message}`);
+    const serialized = err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err;
+    console.error("[email] Erreur complète:", JSON.stringify(serialized, null, 2));
     return { success: false };
   }
 }
