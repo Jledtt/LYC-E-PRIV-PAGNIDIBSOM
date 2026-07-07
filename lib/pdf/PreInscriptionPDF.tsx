@@ -10,6 +10,9 @@ export interface PreInscriptionPDFProps {
     eleve_lieu_naissance?: string;
     eleve_nationalite?: string;
     eleve_sexe?: string;
+    eleve_ethnie?: string;
+    eleve_religion?: string;
+    eleve_telephone_domicile?: string;
     eleve_classe_souhaitee?: string;
     classe_redoublee?: boolean;
     ecole_precedente?: string;
@@ -18,11 +21,15 @@ export interface PreInscriptionPDFProps {
     pere_nom?: string;
     pere_prenom?: string;
     pere_profession?: string;
+    pere_service?: string;
     pere_telephone?: string;
+    pere_email?: string;
     mere_nom?: string;
     mere_prenom?: string;
     mere_profession?: string;
+    mere_service?: string;
     mere_telephone?: string;
+    mere_email?: string;
     contact_nom?: string;
     contact_telephone?: string;
     contact_email?: string;
@@ -30,6 +37,13 @@ export interface PreInscriptionPDFProps {
     classe_actuelle?: string;
     dossier_token?: string;
     created_at?: string;
+    sante_asthme?: boolean;
+    sante_cardiopathie?: boolean;
+    sante_diabete?: boolean;
+    sante_drepanocytose?: boolean;
+    sante_hta?: boolean;
+    sante_epilepsie?: boolean;
+    aptitude_sport?: boolean | null;
   };
 }
 
@@ -50,6 +64,15 @@ const STATUT_COLORS: Record<string, string> = {
   accepte: "#16A34A",
   refuse: "#DC2626",
 };
+
+const PATHOLOGIE_LABELS: Array<{ key: "sante_asthme" | "sante_cardiopathie" | "sante_diabete" | "sante_drepanocytose" | "sante_hta" | "sante_epilepsie"; label: string }> = [
+  { key: "sante_asthme", label: "Asthme" },
+  { key: "sante_cardiopathie", label: "Cardiopathie" },
+  { key: "sante_diabete", label: "Diabète" },
+  { key: "sante_drepanocytose", label: "Drépanocytose" },
+  { key: "sante_hta", label: "HTA" },
+  { key: "sante_epilepsie", label: "Épilepsie" },
+];
 
 function defaultAnneeScolaire(): string {
   const { annee, anneeN1 } = getAnneeScolaire();
@@ -114,6 +137,46 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   valueCell: { width: "65%", padding: 4, fontSize: 8.5 },
+  pathologiesRow: { flexDirection: "row", flexWrap: "wrap", gap: 4, padding: 4 },
+  pathoBadge: {
+    backgroundColor: "#FEE2E2",
+    color: "#B91C1C",
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+  },
+  aptBadgeGreen: {
+    backgroundColor: "#DCFCE7",
+    color: "#15803D",
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+  },
+  aptBadgeRed: {
+    backgroundColor: "#FEE2E2",
+    color: "#B91C1C",
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+  },
+  aptBadgeGray: {
+    backgroundColor: "#F3F4F6",
+    color: "#4B5563",
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+    alignSelf: "flex-start",
+  },
   footer: {
     position: "absolute",
     bottom: 20,
@@ -144,6 +207,7 @@ export default function PreInscriptionPDF({ dossier: p }: PreInscriptionPDFProps
   const statutLabel = p.statut ? STATUT_LABELS[p.statut] ?? p.statut : "—";
   const statutColor = p.statut ? STATUT_COLORS[p.statut] ?? "#6B7280" : "#6B7280";
   const generationDate = new Date().toLocaleDateString("fr-FR");
+  const pathologies = PATHOLOGIE_LABELS.filter(({ key }) => p[key]);
 
   return (
     <Document>
@@ -181,25 +245,32 @@ export default function PreInscriptionPDF({ dossier: p }: PreInscriptionPDFProps
             label="Sexe"
             value={p.eleve_sexe === "M" ? "Masculin" : p.eleve_sexe === "F" ? "Féminin" : "—"}
           />
+          <Ligne label="Ethnie" value={val(p.eleve_ethnie)} />
+          <Ligne label="Religion" value={val(p.eleve_religion)} />
           <Ligne label="Classe souhaitée" value={val(p.eleve_classe_souhaitee)} />
           <Ligne label="Classe redoublée" value={p.classe_redoublee ? "Oui" : "Non"} />
           <Ligne label="École précédente" value={val(p.ecole_precedente)} />
           <Ligne label="Secteur" value={val(p.secteur)} />
           <Ligne label="Quartier / Ville" value={val(p.quartier_ville)} />
+          <Ligne label="Téléphone domicile" value={val(p.eleve_telephone_domicile)} />
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>PÈRE / TUTEUR</Text>
           <Ligne label="Nom complet" value={`${val(p.pere_prenom)} ${val(p.pere_nom)}`} />
           <Ligne label="Profession" value={val(p.pere_profession)} />
+          <Ligne label="Service / Employeur" value={val(p.pere_service)} />
           <Ligne label="Téléphone" value={val(p.pere_telephone)} />
+          <Ligne label="Email" value={val(p.pere_email)} />
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>MÈRE / TUTRICE</Text>
           <Ligne label="Nom complet" value={`${val(p.mere_prenom)} ${val(p.mere_nom)}`} />
           <Ligne label="Profession" value={val(p.mere_profession)} />
+          <Ligne label="Service / Employeur" value={val(p.mere_service)} />
           <Ligne label="Téléphone" value={val(p.mere_telephone)} />
+          <Ligne label="Email" value={val(p.mere_email)} />
         </View>
 
         <View style={styles.section}>
@@ -207,6 +278,38 @@ export default function PreInscriptionPDF({ dossier: p }: PreInscriptionPDFProps
           <Ligne label="Nom" value={val(p.contact_nom)} />
           <Ligne label="Téléphone (WhatsApp)" value={val(p.contact_telephone)} />
           <Ligne label="Email" value={val(p.contact_email)} />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>OBSERVATIONS PARTICULIÈRES</Text>
+          <View style={styles.row}>
+            <View style={styles.labelCell}>
+              <Text>Pathologies connues</Text>
+            </View>
+            <View style={[styles.valueCell, styles.pathologiesRow]}>
+              {pathologies.length > 0 ? (
+                pathologies.map(({ key, label }) => (
+                  <Text key={key} style={styles.pathoBadge}>
+                    {label}
+                  </Text>
+                ))
+              ) : (
+                <Text>Aucune pathologie signalée</Text>
+              )}
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.labelCell}>
+              <Text>Aptitude au sport</Text>
+            </View>
+            <View style={[styles.valueCell, { padding: 4 }]}>
+              {p.aptitude_sport === true && <Text style={styles.aptBadgeGreen}>Apte</Text>}
+              {p.aptitude_sport === false && <Text style={styles.aptBadgeRed}>Inapte</Text>}
+              {(p.aptitude_sport === null || p.aptitude_sport === undefined) && (
+                <Text style={styles.aptBadgeGray}>Non renseigné</Text>
+              )}
+            </View>
+          </View>
         </View>
 
         <View style={styles.section}>

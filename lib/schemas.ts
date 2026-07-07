@@ -14,6 +14,18 @@ function ouiNonToBoolean(v: unknown) {
   return v;
 }
 
+/** Case à cocher HTML ("on"/absente) -> boolean, jamais undefined */
+function checkboxToBoolean(v: unknown) {
+  return v === "on" || v === "true" || v === true;
+}
+
+/** Radio aptitude sport : "apte"/"inapte" -> boolean, "" ou absent -> undefined (non renseigné) */
+function aptitudeSportToBoolean(v: unknown) {
+  if (v === "apte") return true;
+  if (v === "inapte") return false;
+  return undefined;
+}
+
 export const preInscriptionSchema = z
   .object({
     /* Honeypot — doit être vide */
@@ -42,23 +54,39 @@ export const preInscriptionSchema = z
     classeRedoublee: z.preprocess(ouiNonToBoolean, z.boolean().default(false)),
     ecolePrecedente: z.preprocess(emptyToUndefined, z.string().max(200).optional()),
     secteur: z.preprocess(emptyToUndefined, z.string().max(50).optional()),
+    eleveEthnie: z.preprocess(emptyToUndefined, z.string().max(100).optional()),
+    eleveReligion: z.preprocess(emptyToUndefined, z.string().max(100).optional()),
+    eleveTelephoneDomicile: z.preprocess(
+      emptyToUndefined,
+      z.string().regex(phoneRegex, "Numéro de téléphone invalide").optional()
+    ),
 
     /* Père */
     pereNom:        z.preprocess(emptyToUndefined, z.string().max(100).optional()),
     perePrenom:     z.preprocess(emptyToUndefined, z.string().max(100).optional()),
     pereProfession: z.preprocess(emptyToUndefined, z.string().max(100).optional()),
+    pereService:    z.preprocess(emptyToUndefined, z.string().max(150).optional()),
     pereTelephone: z.preprocess(
       emptyToUndefined,
       z.string().regex(phoneRegex, "Numéro de téléphone invalide").optional()
+    ),
+    pereEmail: z.preprocess(
+      emptyToUndefined,
+      z.string().email("Email invalide").max(200).optional()
     ),
 
     /* Mère / tutrice */
     mereNom:        z.preprocess(emptyToUndefined, z.string().max(100).optional()),
     merePrenom:     z.preprocess(emptyToUndefined, z.string().max(100).optional()),
     mereProfession: z.preprocess(emptyToUndefined, z.string().max(100).optional()),
+    mereService:    z.preprocess(emptyToUndefined, z.string().max(150).optional()),
     mereTelephone: z.preprocess(
       emptyToUndefined,
       z.string().regex(phoneRegex, "Numéro de téléphone invalide").optional()
+    ),
+    mereEmail: z.preprocess(
+      emptyToUndefined,
+      z.string().email("Email invalide").max(200).optional()
     ),
 
     /* Contact principal (WhatsApp / suivi du dossier) */
@@ -74,6 +102,15 @@ export const preInscriptionSchema = z
 
     /* Message libre */
     message: z.preprocess(emptyToUndefined, z.string().max(1000).optional()),
+
+    /* Observations particulières — état de santé (fins médicales d'urgence) */
+    santeAsthme: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    santeCardiopathie: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    santeDiabete: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    santeDrepanocytose: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    santeHta: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    santeEpilepsie: z.preprocess(checkboxToBoolean, z.boolean().default(false)),
+    aptitudeSport: z.preprocess(aptitudeSportToBoolean, z.boolean().optional()),
   })
   .refine(
     (data) => {

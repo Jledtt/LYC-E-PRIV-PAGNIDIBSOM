@@ -340,6 +340,28 @@ export default function PreInscriptionForm() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-5">
+          <FormField id="eleveEthnie" label="Ethnie" error={getError(fieldErrors, "eleveEthnie")}>
+            <input
+              id="eleveEthnie"
+              name="eleveEthnie"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+
+          <FormField id="eleveReligion" label="Religion" error={getError(fieldErrors, "eleveReligion")}>
+            <input
+              id="eleveReligion"
+              name="eleveReligion"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
           <FormField
             id="classeRedoublee"
             label="Classe déjà redoublée ?"
@@ -363,19 +385,36 @@ export default function PreInscriptionForm() {
           </FormField>
         </div>
 
-        <FormField
-          id="ecolePrecedente"
-          label="École précédente"
-          error={getError(fieldErrors, "ecolePrecedente")}
-        >
-          <input
+        <div className="grid sm:grid-cols-2 gap-5">
+          <FormField
             id="ecolePrecedente"
-            name="ecolePrecedente"
-            type="text"
-            className={inputClasses}
-            placeholder="Nom de l'établissement précédent (facultatif)"
-          />
-        </FormField>
+            label="École précédente"
+            error={getError(fieldErrors, "ecolePrecedente")}
+          >
+            <input
+              id="ecolePrecedente"
+              name="ecolePrecedente"
+              type="text"
+              className={inputClasses}
+              placeholder="Nom de l'établissement précédent (facultatif)"
+            />
+          </FormField>
+
+          <FormField
+            id="eleveTelephoneDomicile"
+            label="Téléphone domicile"
+            error={getError(fieldErrors, "eleveTelephoneDomicile")}
+          >
+            <input
+              id="eleveTelephoneDomicile"
+              name="eleveTelephoneDomicile"
+              type="tel"
+              className={inputClasses}
+              placeholder="+226 00 00 00 00 (facultatif)"
+              aria-invalid={!!getError(fieldErrors, "eleveTelephoneDomicile")}
+            />
+          </FormField>
+        </div>
       </fieldset>
 
       {/* Section Père */}
@@ -419,6 +458,18 @@ export default function PreInscriptionForm() {
             />
           </FormField>
 
+          <FormField id="pereService" label="Service / Employeur" error={getError(fieldErrors, "pereService")}>
+            <input
+              id="pereService"
+              name="pereService"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
           <FormField id="pereTelephone" label="Téléphone" error={getError(fieldErrors, "pereTelephone")}>
             <input
               id="pereTelephone"
@@ -427,6 +478,17 @@ export default function PreInscriptionForm() {
               className={inputClasses}
               placeholder="+226 00 00 00 00 (facultatif)"
               aria-invalid={!!getError(fieldErrors, "pereTelephone")}
+            />
+          </FormField>
+
+          <FormField id="pereEmail" label="E-mail" error={getError(fieldErrors, "pereEmail")}>
+            <input
+              id="pereEmail"
+              name="pereEmail"
+              type="email"
+              className={inputClasses}
+              placeholder="exemple@email.com (facultatif)"
+              aria-invalid={!!getError(fieldErrors, "pereEmail")}
             />
           </FormField>
         </div>
@@ -465,6 +527,18 @@ export default function PreInscriptionForm() {
             />
           </FormField>
 
+          <FormField id="mereService" label="Service / Employeur" error={getError(fieldErrors, "mereService")}>
+            <input
+              id="mereService"
+              name="mereService"
+              type="text"
+              className={inputClasses}
+              placeholder="Facultatif"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-5">
           <FormField id="mereTelephone" label="Téléphone" error={getError(fieldErrors, "mereTelephone")}>
             <input
               id="mereTelephone"
@@ -473,6 +547,17 @@ export default function PreInscriptionForm() {
               className={inputClasses}
               placeholder="+226 00 00 00 00 (facultatif)"
               aria-invalid={!!getError(fieldErrors, "mereTelephone")}
+            />
+          </FormField>
+
+          <FormField id="mereEmail" label="E-mail" error={getError(fieldErrors, "mereEmail")}>
+            <input
+              id="mereEmail"
+              name="mereEmail"
+              type="email"
+              className={inputClasses}
+              placeholder="exemple@email.com (facultatif)"
+              aria-invalid={!!getError(fieldErrors, "mereEmail")}
             />
           </FormField>
         </div>
@@ -547,6 +632,106 @@ export default function PreInscriptionForm() {
             }
           />
         </FormField>
+      </fieldset>
+
+      {/* Section Observations particulières */}
+      <fieldset className="flex flex-col gap-4">
+        <legend className="text-lg font-bold text-primary-800 pb-1 border-b border-neutral-200 w-full">
+          Observations particulières
+        </legend>
+        <p className="text-sm text-neutral-600 -mt-2">
+          État de santé — Pathologies connues (cochez si applicable)
+        </p>
+
+        <div className="grid sm:grid-cols-2 gap-3">
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeAsthme"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            Asthme
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeCardiopathie"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            Cardiopathie
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeDiabete"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            Diabète
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeDrepanocytose"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            Drépanocytose
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeHta"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            HTA
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-800">
+            <input
+              type="checkbox"
+              name="santeEpilepsie"
+              className="w-4 h-4 rounded border-neutral-300 text-primary-800 focus:ring-primary-600"
+            />
+            Épilepsie
+          </label>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium text-neutral-800">Aptitude au sport</span>
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-2 text-sm text-neutral-800">
+              <input
+                type="radio"
+                name="aptitudeSport"
+                value="apte"
+                className="w-4 h-4 border-neutral-300 text-primary-800 focus:ring-primary-600"
+              />
+              Apte
+            </label>
+            <label className="flex items-center gap-2 text-sm text-neutral-800">
+              <input
+                type="radio"
+                name="aptitudeSport"
+                value="inapte"
+                className="w-4 h-4 border-neutral-300 text-primary-800 focus:ring-primary-600"
+              />
+              Inapte
+            </label>
+            <label className="flex items-center gap-2 text-sm text-neutral-800">
+              <input
+                type="radio"
+                name="aptitudeSport"
+                value=""
+                defaultChecked
+                className="w-4 h-4 border-neutral-300 text-primary-800 focus:ring-primary-600"
+              />
+              Non renseigné
+            </label>
+          </div>
+        </div>
+
+        <p className="text-xs text-neutral-500">
+          Ces informations sont confidentielles et ne seront utilisées qu&rsquo;à des fins
+          médicales d&rsquo;urgence.
+        </p>
       </fieldset>
 
       {/* Message libre */}
