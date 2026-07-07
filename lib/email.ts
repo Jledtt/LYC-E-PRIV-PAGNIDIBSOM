@@ -17,7 +17,7 @@ export async function sendNotificationEmail(opts: {
   const { Resend } = await import("resend");
   const resend = new Resend(apiKey);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kiswensida.bf";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lyceepagnidibsom.com";
   const domain = new URL(siteUrl).hostname;
 
   const { error } = await resend.emails.send({
