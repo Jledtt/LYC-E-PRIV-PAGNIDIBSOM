@@ -6,6 +6,7 @@ import StatusSelect from "../StatusSelect";
 import ClasseActuelleSelect from "../ClasseActuelleSelect";
 import { STATUT_OPTIONS } from "../statuts";
 import DossierTokenSection from "./DossierTokenSection";
+import TelechargerPdfButton from "./TelechargerPdfButton";
 
 export const metadata: Metadata = {
   title: "Détail de la pré-inscription",
@@ -104,6 +105,7 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
           </p>
         </div>
         <div className="flex flex-wrap gap-3 items-start">
+          <TelechargerPdfButton id={p.id} />
           <StatusSelect id={p.id} currentStatut={p.statut} />
           <ClasseActuelleSelect id={p.id} currentClasse={p.classe_actuelle} />
         </div>
