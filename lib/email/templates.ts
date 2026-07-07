@@ -1,5 +1,5 @@
 const BORDEAUX = "#8B1A1A";
-const SITE_URL = "https://lyc-e-priv-pagnidibsom.vercel.app";
+const SITE_URL = "https://lyceepagnidibsom.com";
 const CONTACT_EMAIL = "lyceepagnidibsom@gmail.com";
 
 export interface EmailTemplate {
