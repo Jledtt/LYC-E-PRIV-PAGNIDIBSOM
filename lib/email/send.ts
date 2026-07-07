@@ -21,7 +21,6 @@ export async function sendConfirmationPreInscription(
 ): Promise<SendResult> {
   try {
     const { subject, html } = confirmationPreInscription(params);
-    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,
@@ -47,7 +46,6 @@ export async function sendNotificationAdmin(
 ): Promise<SendResult> {
   try {
     const { subject, html } = notificationAdmin(params);
-    console.log("[email] Envoi vers:", ADMIN_EMAIL, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: ADMIN_EMAIL,
@@ -73,7 +71,6 @@ export async function sendChangementStatut(
 ): Promise<SendResult> {
   try {
     const { subject, html } = changementStatut(params);
-    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,
@@ -99,7 +96,6 @@ export async function sendBienvenueEspaceParent(
 ): Promise<SendResult> {
   try {
     const { subject, html } = bienvenueEspaceParent(params);
-    console.log("[email] Envoi vers:", params.to, "depuis:", FROM_EMAIL);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,

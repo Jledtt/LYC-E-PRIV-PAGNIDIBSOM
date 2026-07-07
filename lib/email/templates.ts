@@ -17,7 +17,8 @@ function wrapEmail(bodyHtml: string): string {
     ${bodyHtml}
   </div>
   <div style="padding: 16px 24px; border-top: 1px solid #eeeeee; color: #888888; font-size: 12px;">
-    Ne pas répondre à cet email — Lycée Privé Pagnidibsom de Zanghin
+    Cet email a été envoyé depuis noreply@lyceepagnidibsom.com — Ne pas répondre directement<br />
+    <a href="https://lyceepagnidibsom.com" style="color: #888888;">lyceepagnidibsom.com</a> — Zanghin, Ouagadougou, Burkina Faso
   </div>
 </div>`;
 }
