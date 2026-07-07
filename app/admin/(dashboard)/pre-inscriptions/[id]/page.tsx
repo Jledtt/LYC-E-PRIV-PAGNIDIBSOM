@@ -5,6 +5,7 @@ import { createAuthClient } from "@/lib/supabase/server";
 import StatusSelect from "../StatusSelect";
 import ClasseActuelleSelect from "../ClasseActuelleSelect";
 import { STATUT_OPTIONS } from "../statuts";
+import DossierTokenSection from "./DossierTokenSection";
 
 export const metadata: Metadata = {
   title: "Détail de la pré-inscription",
@@ -46,6 +47,7 @@ interface PreInscriptionDetail {
   message: string | null;
   statut: string;
   classe_actuelle: string | null;
+  dossier_token: string | null;
 }
 
 interface PageProps {
@@ -68,7 +70,7 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
   const { data } = await supabase
     .from("pre_inscriptions")
     .select(
-      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_telephone, mere_nom, mere_prenom, mere_profession, mere_telephone, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut, classe_actuelle"
+      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_telephone, mere_nom, mere_prenom, mere_profession, mere_telephone, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut, classe_actuelle, dossier_token"
     )
     .eq("id", id)
     .maybeSingle();
@@ -176,6 +178,8 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
           <p className="text-sm text-[#1F2937] whitespace-pre-wrap">{p.message}</p>
         </div>
       )}
+
+      <DossierTokenSection dossierToken={p.dossier_token} />
     </div>
   );
 }
