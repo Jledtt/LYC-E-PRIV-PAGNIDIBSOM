@@ -1,11 +1,13 @@
 import { Ikoddi, SMSStatus } from "ikoddi-client-sdk";
 
-// Expéditeur SMS : "LPP" (3 caractères, sous la limite de 11 imposée par la
-// plupart des opérateurs). Un Sender ID alphanumérique doit être approuvé
-// dans le dashboard Ikoddi avant utilisation en production — tant qu'il ne
-// l'est pas, Ikoddi peut retomber sur un expéditeur générique ou rejeter
-// l'envoi ; utiliser dans ce cas le numéro de l'école comme expéditeur.
-const SMS_SENDER_DEFAUT = "LPP";
+// Expéditeur SMS : IKODDI_SENDER_ID (ex. "LPP", alphanumérique, 11
+// caractères max selon les opérateurs) doit être approuvé dans le dashboard
+// Ikoddi avant utilisation en production — tant qu'il ne l'est pas, ou en
+// l'absence de variable d'environnement, on retombe sur le numéro de
+// l'école comme expéditeur.
+function getSenderIdDefaut(): string {
+  return process.env.IKODDI_SENDER_ID || "22672816159";
+}
 
 function getIkoddiClient(): Ikoddi {
   const apiKey = process.env.IKODDI_API_KEY;
@@ -59,7 +61,7 @@ export async function envoyerSMS({
   numeros,
   message,
   campagne,
-  expediteur = SMS_SENDER_DEFAUT,
+  expediteur = getSenderIdDefaut(),
 }: EnvoyerSMSParams): Promise<EnvoyerSMSResult> {
   const numerosValides = numeros
     .map(formaterNumeroBF)
