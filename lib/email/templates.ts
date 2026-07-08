@@ -197,6 +197,28 @@ export function changementStatut({
   };
 }
 
+export interface NotificationParentParams {
+  sujet: string;
+  contenu: string;
+}
+
+/** Convertit les retours à la ligne du contenu en paragraphes HTML. */
+function contenuEnParagraphes(contenu: string): string {
+  return contenu
+    .split(/\n{2,}/)
+    .map((bloc) => `<p style="margin: 0 0 16px;">${bloc.replace(/\n/g, "<br />")}</p>`)
+    .join("");
+}
+
+export function notificationParent({ sujet, contenu }: NotificationParentParams): EmailTemplate {
+  const html = wrapEmail(contenuEnParagraphes(contenu));
+
+  return {
+    subject: sujet,
+    html,
+  };
+}
+
 export interface BienvenueEspaceParentParams {
   nomParent: string;
   prenomEleve: string;

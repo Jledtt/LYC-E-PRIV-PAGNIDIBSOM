@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/admin/actualites", label: "Actualités" },
   { href: "/admin/emploi-du-temps", label: "Emploi du temps" },
   { href: "/admin/calendrier-devoirs", label: "Calendrier devoirs" },
+  { href: "/admin/notifications", label: "Notifications" },
 ];
 
 export default function AdminNav() {
