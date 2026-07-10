@@ -54,7 +54,7 @@ export default function AccueilPage() {
             src="/images/batiment-1.jpg"
             alt="Façade du Lycée Privé Pagnidibsom — Quartier Sondogo, Secteur 32, Ouagadougou"
             fill
-            className="object-cover opacity-25"
+            className="object-cover opacity-10"
             priority
             sizes="100vw"
           />
