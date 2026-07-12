@@ -2,7 +2,7 @@ export const accueilContent = {
   hero: {
     heading: "Bâtir l'Excellence\npour votre enfant",
     subheading:
-      "Du collège au lycée général et technique, le Lycée Privé Pagnidibsom accompagne chaque élève vers la réussite dans un cadre clôturé, sécurisé et bienveillant.",
+      "Du primaire au lycée général et technique, le Lycée Privé Pagnidibsom accompagne chaque élève vers la réussite dans un cadre clôturé, sécurisé et bienveillant.",
     cta: "Pré-inscrivez votre enfant",
     ctaSecondary: "Découvrir l'école",
   },
@@ -47,6 +47,12 @@ export const accueilContent = {
   },
   cycles: {
     heading: "Nos filières d'enseignement",
+    primaire: {
+      label: "Primaire",
+      classes: "CP1 · CP2 · CE1 · CE2 · CM1 · CM2",
+      description:
+        "Ouverture du cycle primaire dès cette rentrée avec la classe de CP1, pour poser les toutes premières bases de la scolarité.",
+    },
     college: {
       label: "Collège",
       classes: "6e · 5e · 4e · 3e",

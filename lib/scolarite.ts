@@ -1,7 +1,10 @@
 // Constantes du référentiel scolaire LPP — partagées entre admin et espace parent.
 // Pas de directive "use server" : ce module exporte des constantes, pas des fonctions async.
 
-export const CLASSES = ['6e', '5e', '4e', '3e', '2nde A', '2nde C'] as const;
+export const CLASSES = [
+  'CP1', 'CP2', 'CE1', 'CE2', 'CM1', 'CM2',
+  '6e', '5e', '4e', '3e', '2nde A', '2nde D',
+] as const;
 export type Classe = (typeof CLASSES)[number];
 
 export const JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] as const;

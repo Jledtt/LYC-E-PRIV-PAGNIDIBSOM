@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "Nos Formations",
   description:
-    "Collège (6e–3e, préparation au BEPC), Lycée Général (séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) à Ouagadougou, Burkina Faso. Inscriptions ouvertes.",
+    "Primaire (CP1 à CM2), Collège (6e–3e, préparation au BEPC), Lycée Général (séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) à Ouagadougou, Burkina Faso. Inscriptions ouvertes.",
 };
 
 export default function FormationsPage() {
@@ -24,6 +24,70 @@ export default function FormationsPage() {
           <p className="text-primary-200 text-lg">{c.hero.subheading}</p>
         </div>
       </section>
+
+      {/* Primaire */}
+      <section id="primaire" className="max-w-5xl mx-auto px-4 py-14 sm:py-20 scroll-mt-20">
+        <div className="flex flex-col lg:flex-row gap-10">
+          <div className="flex-1">
+            <span className="inline-block bg-primary-100 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-4">
+              {c.primaire.classes}
+            </span>
+            <h2
+              className="text-3xl font-bold text-primary-800 mb-4 heading-serif"
+              style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+            >
+              {c.primaire.heading}
+            </h2>
+            <p className="text-neutral-600 leading-relaxed mb-6">{c.primaire.description}</p>
+          </div>
+
+          <div className="flex-1 flex flex-col gap-6">
+            {/* Image salle de classe */}
+            <div className="relative h-48 rounded-xl overflow-hidden">
+              <Image
+                src="/images/salle-3.jpg"
+                alt="Salle de classe au Lycée Privé Pagnidibsom"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Matières */}
+            <div>
+              <h3 className="font-semibold text-neutral-800 mb-3">Matières enseignées</h3>
+              <ul className="grid grid-cols-2 gap-1.5">
+                {c.primaire.matieres.map((m) => (
+                  <li key={m} className="flex items-center gap-2 text-sm text-neutral-600">
+                    <span
+                      className="w-1.5 h-1.5 bg-primary-400 rounded-full shrink-0"
+                      aria-hidden="true"
+                    />
+                    {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Atouts */}
+            <div>
+              <h3 className="font-semibold text-neutral-800 mb-3">Nos atouts</h3>
+              <ul className="flex flex-col gap-2">
+                {c.primaire.atouts.map((a) => (
+                  <li key={a} className="flex items-start gap-2 text-sm text-neutral-600">
+                    <span className="text-primary-600 mt-0.5 shrink-0" aria-hidden="true">
+                      ✓
+                    </span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr className="max-w-5xl mx-auto border-neutral-200" />
 
       {/* Collège */}
       <section id="college" className="max-w-5xl mx-auto px-4 py-14 sm:py-20 scroll-mt-20">

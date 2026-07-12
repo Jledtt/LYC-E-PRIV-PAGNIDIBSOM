@@ -2,11 +2,32 @@ export const formationsContent = {
   meta: {
     title: "Nos Formations — Lycée Privé Pagnidibsom",
     description:
-      "Collège (6e à 3e), Lycée Général (2nde, 1re — séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) au Lycée Privé Pagnidibsom.",
+      "Primaire (CP1 à CM2), Collège (6e à 3e), Lycée Général (2nde, 1re — séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) au Lycée Privé Pagnidibsom.",
   },
   hero: {
     heading: "Nos Formations",
-    subheading: "Trois filières complémentaires pour construire votre avenir",
+    subheading: "Quatre cycles complémentaires pour construire votre avenir",
+  },
+  primaire: {
+    heading: "Cycle du Primaire",
+    classes: "CP1 — CP2 — CE1 — CE2 — CM1 — CM2",
+    description:
+      "Le Lycée Privé Pagnidibsom ouvre son cycle primaire, à commencer par la classe de CP1 pour cette rentrée. Nos élèves y acquièrent les bases de la lecture, de l'écriture et du calcul dans un environnement bienveillant et sécurisé.",
+    matieres: [
+      "Français",
+      "Mathématiques",
+      "Éveil Scientifique",
+      "Éducation Civique et Morale",
+      "Lecture / Écriture",
+      "Chant et Poésie",
+      "Éducation Physique",
+    ],
+    atouts: [
+      "Effectifs réduits pour un accompagnement individualisé",
+      "Cadre sécurisé et bienveillant",
+      "Enseignants qualifiés pour le premier apprentissage",
+      "Passerelle directe vers le collège Pagnidibsom",
+    ],
   },
   college: {
     heading: "Cycle du Collège",
@@ -89,9 +110,9 @@ export const formationsContent = {
   horaires: {
     heading: "Organisation des cours",
     items: [
-      { label: "Lundi au Vendredi", value: "7h30 – 17h00" },
-      { label: "Samedi matin",      value: "7h30 – 12h00" },
-      { label: "Pause déjeuner",    value: "12h00 – 14h00" },
+      { label: "Lundi au Vendredi", value: "7h00 – 17h00" },
+      { label: "Samedi matin",      value: "7h00 – 12h00" },
+      { label: "Pause déjeuner",    value: "12h00 – 15h00" },
     ],
     note: "Les horaires peuvent varier selon les niveaux. Consultez-nous pour les détails par classe.",
   },

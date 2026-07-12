@@ -262,6 +262,15 @@ export default function PreInscriptionForm() {
               }
             >
               <option value="">Sélectionner une classe...</option>
+              <optgroup label="Enseignement Primaire">
+                {siteConfig.classeOptions
+                  .filter((cls) => cls.group === "primaire")
+                  .map((cls) => (
+                    <option key={cls.value} value={cls.value}>
+                      {cls.label}
+                    </option>
+                  ))}
+              </optgroup>
               <optgroup label="Enseignement Général">
                 {siteConfig.classeOptions
                   .filter((cls) => cls.group === "general")

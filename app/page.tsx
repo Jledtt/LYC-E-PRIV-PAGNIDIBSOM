@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     absolute: "Lycée Privé Pagnidibsom — Bâtir l'Excellence | Ouagadougou",
   },
   description:
-    "Lycée privé à Ouagadougou, Secteur 32 — Enseignement Général (6e à 1re, séries A et D) et Technique (BEP Génie Civil, BEP Électrotechnique). 100 % de réussite au BEPC 2025. Inscriptions ouvertes.",
+    "Lycée privé à Ouagadougou, Secteur 32 — Primaire (CP1 à CM2), Enseignement Général (6e à 1re, séries A et D) et Technique (BEP Génie Civil, BEP Électrotechnique). 100 % de réussite au BEPC 2025. Inscriptions ouvertes.",
   openGraph: {
     title: "Lycée Privé Pagnidibsom — Bâtir l'Excellence",
     description:
@@ -188,7 +188,31 @@ export default function AccueilPage() {
           >
             {c.cycles.heading}
           </h2>
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Primaire */}
+            <article className="bg-white rounded-xl border-2 border-primary-100 p-7 flex flex-col gap-4">
+              <div>
+                <span className="inline-block bg-primary-100 text-primary-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3">
+                  {c.cycles.primaire.label}
+                </span>
+                <p
+                  className="text-2xl font-bold text-primary-800 heading-serif"
+                  style={{ fontFamily: "var(--font-lora), Georgia, serif" }}
+                >
+                  {c.cycles.primaire.classes}
+                </p>
+              </div>
+              <p className="text-neutral-600 text-sm leading-relaxed flex-1">
+                {c.cycles.primaire.description}
+              </p>
+              <Link
+                href="/formations#primaire"
+                className="text-primary-700 font-semibold text-sm hover:underline inline-flex items-center gap-1"
+              >
+                Voir le programme <span aria-hidden="true">→</span>
+              </Link>
+            </article>
+
             {/* Collège */}
             <article className="bg-white rounded-xl border-2 border-primary-100 p-7 flex flex-col gap-4">
               <div>
