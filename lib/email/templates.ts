@@ -1,6 +1,6 @@
 const BORDEAUX = "#8B1A1A";
 const SITE_URL = "https://lyceepagnidibsom.com";
-const CONTACT_EMAIL = "lyceepagnidibsom@gmail.com";
+const CONTACT_EMAIL = "infoslyceepagnidibsom@gmail.com";
 
 export interface EmailTemplate {
   subject: string;

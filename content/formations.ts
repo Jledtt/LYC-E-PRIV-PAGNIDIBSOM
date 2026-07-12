@@ -2,7 +2,7 @@ export const formationsContent = {
   meta: {
     title: "Nos Formations — Lycée Privé Pagnidibsom",
     description:
-      "Collège (6e à 3e), Lycée Général (2nde, 1re — séries A et C) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) au Lycée Privé Pagnidibsom.",
+      "Collège (6e à 3e), Lycée Général (2nde, 1re — séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) au Lycée Privé Pagnidibsom.",
   },
   hero: {
     heading: "Nos Formations",
@@ -35,7 +35,7 @@ export const formationsContent = {
     heading: "Lycée Général",
     classes: "2nde — 1re",
     description:
-      "Le Lycée Privé Pagnidibsom prépare les élèves aux séries A et C du Baccalauréat général. Les élèves bénéficient d'un encadrement ciblé pour aborder les épreuves avec confiance.",
+      "Le Lycée Privé Pagnidibsom prépare les élèves aux séries A et D du Baccalauréat général. Les élèves bénéficient d'un encadrement ciblé pour aborder les épreuves avec confiance.",
     series: [
       {
         code: "A",
@@ -44,9 +44,10 @@ export const formationsContent = {
           "Français, Philosophie, Histoire-Géographie, Langues vivantes et Sciences Sociales.",
       },
       {
-        code: "C",
-        label: "Série Scientifique (C)",
-        description: "Mathématiques et Sciences Physiques avec spécialisation scientifique.",
+        code: "D",
+        label: "Série Scientifique (D)",
+        description:
+          "Mathématiques, Sciences de la Vie et de la Terre et Physique-Chimie, pour une formation scientifique généraliste.",
       },
     ],
     examen: "Baccalauréat général",
@@ -65,18 +66,19 @@ export const formationsContent = {
     filieres: [
       {
         code: "GC",
-        label: "BEP1 Génie Civil",
+        label: "Génie Civil",
         description:
           "Dessin technique, résistance des matériaux, topographie, béton armé et organisation de chantier. Prépare aux métiers du bâtiment et des travaux publics.",
+        examen: "BEP → BAC F4",
       },
       {
         code: "ET",
-        label: "BEP1 Électrotechnique",
+        label: "Électrotechnique",
         description:
           "Électricité, électronique, automatismes et installations industrielles. Prépare aux métiers de l'électricité du bâtiment et de l'industrie.",
+        examen: "BEP → BAC F3",
       },
     ],
-    examen: "BEP — Brevet d'Études Professionnelles",
     atouts: [
       "Formation alliant théorie et pratique",
       "Débouchés directs dans les secteurs BTP et énergie",

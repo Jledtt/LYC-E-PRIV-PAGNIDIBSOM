@@ -49,7 +49,7 @@ export const preInscriptionSchema = z
       .refine(Boolean, "La classe souhaitée est requise"),
     serie: z.preprocess(
       emptyToUndefined,
-      z.enum(["A", "C"] as const).optional()
+      z.enum(["A", "D"] as const).optional()
     ),
     classeRedoublee: z.preprocess(ouiNonToBoolean, z.boolean().default(false)),
     ecolePrecedente: z.preprocess(emptyToUndefined, z.string().max(200).optional()),

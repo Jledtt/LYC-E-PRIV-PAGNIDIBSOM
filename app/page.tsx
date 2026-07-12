@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     absolute: "Lycée Privé Pagnidibsom — Bâtir l'Excellence | Ouagadougou",
   },
   description:
-    "Lycée privé à Ouagadougou, Secteur 32 — Enseignement Général (6e à 1re, séries A et C) et Technique (BEP Génie Civil, BEP Électrotechnique). 100 % de réussite au BEPC 2025. Inscriptions ouvertes.",
+    "Lycée privé à Ouagadougou, Secteur 32 — Enseignement Général (6e à 1re, séries A et D) et Technique (BEP Génie Civil, BEP Électrotechnique). 100 % de réussite au BEPC 2025. Inscriptions ouvertes.",
   openGraph: {
     title: "Lycée Privé Pagnidibsom — Bâtir l'Excellence",
     description:

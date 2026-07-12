@@ -7,7 +7,7 @@ export const siteConfig = {
   proviseur: "Sœur Marie Madeleine Dakono",
   foundedYear: 2021,
   description:
-    "Le Lycée Privé Pagnidibsom (LPP) est un établissement d'enseignement privé situé au Secteur 32 de Ouagadougou, Burkina Faso. Nous accueillons les élèves du collège (6e à 3e), du lycée général (2nde et 1re — séries A et C) et de l'enseignement technique (BEP1 Génie Civil, BEP1 Électrotechnique) dans un cadre clôturé, sécurisé et propice à l'excellence.",
+    "Le Lycée Privé Pagnidibsom (LPP) est un établissement d'enseignement privé situé au Secteur 32 de Ouagadougou, Burkina Faso. Nous accueillons les élèves du collège (6e à 3e), du lycée général (2nde et 1re — séries A et D) et de l'enseignement technique (BEP1 Génie Civil, BEP1 Électrotechnique) dans un cadre clôturé, sécurisé et propice à l'excellence.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lyceepagnidibsom.com",
   locale: "fr_BF",
 
@@ -17,7 +17,7 @@ export const siteConfig = {
     bp: "04 BP 8825 Ouaga 04",
     phone: "+226 72 81 61 59",
     phoneAlt: "+226 78 42 62 06",
-    email: "lyceepagnidibsom@gmail.com",
+    email: "infoslyceepagnidibsom@gmail.com",
     mapLink: "",
   },
 
@@ -39,7 +39,7 @@ export const siteConfig = {
 
   series: [
     { value: "A", label: "Littéraire (A)" },
-    { value: "C", label: "Scientifique (C)" },
+    { value: "D", label: "Scientifique (D)" },
   ],
 
   classeOptions: [

@@ -57,7 +57,7 @@ export const accueilContent = {
       label: "Lycée Général",
       classes: "2nde · 1re",
       description:
-        "Un accompagnement ciblé vers le Baccalauréat général, séries Littéraire (A) et Scientifique (C).",
+        "Un accompagnement ciblé vers le Baccalauréat général, séries Littéraire (A) et Scientifique (D).",
     },
     technique: {
       label: "Technique",

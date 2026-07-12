@@ -320,7 +320,7 @@ export default function PreInscriptionPDF({ dossier: p }: PreInscriptionPDFProps
 
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>
-            Lycée Privé Pagnidibsom — lyceepagnidibsom.com — lyceepagnidibsom@gmail.com
+            Lycée Privé Pagnidibsom — lyceepagnidibsom.com — infoslyceepagnidibsom@gmail.com
           </Text>
           <Text style={styles.footerText}>Document généré le {generationDate}</Text>
         </View>

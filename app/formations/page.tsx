@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "Nos Formations",
   description:
-    "Collège (6e–3e, préparation au BEPC), Lycée Général (séries A et C) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) à Ouagadougou, Burkina Faso. Inscriptions ouvertes.",
+    "Collège (6e–3e, préparation au BEPC), Lycée Général (séries A et D) et Enseignement Technique (BEP1 Génie Civil, BEP1 Électrotechnique) à Ouagadougou, Burkina Faso. Inscriptions ouvertes.",
 };
 
 export default function FormationsPage() {
@@ -171,7 +171,11 @@ export default function FormationsPage() {
                 {filiere.code}
               </span>
               <h3 className="font-semibold text-primary-800 text-lg mb-2">{filiere.label}</h3>
-              <p className="text-neutral-600 text-sm leading-relaxed">{filiere.description}</p>
+              <p className="text-neutral-600 text-sm leading-relaxed mb-4">{filiere.description}</p>
+              <div className="bg-neutral-50 rounded-lg p-3 border border-neutral-200">
+                <p className="font-semibold text-neutral-800 mb-0.5 text-xs">Examen préparé</p>
+                <p className="text-primary-700 font-bold text-sm">{filiere.examen}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -187,11 +191,7 @@ export default function FormationsPage() {
               sizes="(max-width: 640px) 100vw, 50vw"
             />
           </div>
-          <div className="flex flex-col justify-between gap-4">
-            <div className="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
-              <p className="font-semibold text-neutral-800 mb-1 text-sm">Examen préparé</p>
-              <p className="text-primary-700 font-bold">{c.technique.examen}</p>
-            </div>
+          <div className="flex flex-col gap-4">
             <div>
               <h3 className="font-semibold text-neutral-800 mb-3">Nos atouts</h3>
               <ul className="flex flex-col gap-2">
