@@ -23,7 +23,7 @@ export const siteConfig = {
 
   social: {
     facebook: "https://facebook.com/kiswensida",
-    whatsapp: "https://wa.me/22600000000",
+    whatsapp: "https://wa.me/22678426206",
   },
 
   cycles: [
