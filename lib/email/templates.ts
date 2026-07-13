@@ -219,6 +219,44 @@ export function notificationParent({ sujet, contenu }: NotificationParentParams)
   };
 }
 
+export interface PaiementValideParams {
+  nomEleve: string;
+  prenomEleve: string;
+  typeFrais: string;
+  montant: number;
+}
+
+export function paiementValide({
+  nomEleve,
+  prenomEleve,
+  typeFrais,
+  montant,
+}: PaiementValideParams): EmailTemplate {
+  const eleve = `${prenomEleve} ${nomEleve}`;
+  const montantFormate = `${montant.toLocaleString("fr-FR")} FCFA`;
+
+  const html = wrapEmail(`
+    <p>Bonjour,</p>
+    <p>Nous vous confirmons que votre paiement pour <strong>${eleve}</strong> a bien été vérifié et validé.</p>
+    <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+      <tr>
+        <td style="padding: 6px 0; color: #666666; width: 40%;">Type de frais</td>
+        <td style="padding: 6px 0; font-weight: bold;">${typeFrais}</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0; color: #666666;">Montant</td>
+        <td style="padding: 6px 0; font-weight: bold;">${montantFormate}</td>
+      </tr>
+    </table>
+    <p>Merci pour votre confiance. Pour toute question, contactez-nous à ${CONTACT_EMAIL}.</p>
+  `);
+
+  return {
+    subject: `Paiement validé — ${eleve}`,
+    html,
+  };
+}
+
 export interface BienvenueEspaceParentParams {
   nomParent: string;
   prenomEleve: string;

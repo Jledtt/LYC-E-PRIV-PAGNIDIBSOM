@@ -4,10 +4,12 @@ import {
   notificationAdmin,
   changementStatut,
   bienvenueEspaceParent,
+  paiementValide,
   type ConfirmationPreInscriptionParams,
   type NotificationAdminParams,
   type ChangementStatutParams,
   type BienvenueEspaceParentParams,
+  type PaiementValideParams,
 } from "./templates";
 
 export interface SendResult {
@@ -71,6 +73,31 @@ export async function sendChangementStatut(
 ): Promise<SendResult> {
   try {
     const { subject, html } = changementStatut(params);
+    const { error } = await resend.emails.send({
+      from: FROM,
+      to: params.to,
+      subject,
+      html,
+    });
+
+    if (error) {
+      console.error("[email] Erreur complète:", JSON.stringify(error, null, 2));
+      return { success: false };
+    }
+
+    return { success: true };
+  } catch (err) {
+    const serialized = err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err;
+    console.error("[email] Erreur complète:", JSON.stringify(serialized, null, 2));
+    return { success: false };
+  }
+}
+
+export async function sendPaiementValide(
+  params: PaiementValideParams & { to: string }
+): Promise<SendResult> {
+  try {
+    const { subject, html } = paiementValide(params);
     const { error } = await resend.emails.send({
       from: FROM,
       to: params.to,

@@ -12,6 +12,8 @@ const navLinks = [
   { href: "/admin/emploi-du-temps", label: "Emploi du temps" },
   { href: "/admin/calendrier-devoirs", label: "Calendrier devoirs" },
   { href: "/admin/notifications", label: "Notifications" },
+  { href: "/admin/paiements", label: "Paiements à valider" },
+  { href: "/admin/config-paiements", label: "Config. Paiements" },
 ];
 
 export default function AdminNav() {

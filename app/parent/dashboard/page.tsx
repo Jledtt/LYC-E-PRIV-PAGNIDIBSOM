@@ -103,11 +103,19 @@ export default async function ParentDashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10 flex flex-col gap-8">
-      <div>
-        <h1 className="text-2xl font-bold text-primary-800 heading-serif">Mon espace</h1>
-        <p className="text-neutral-500 text-sm mt-1">
-          Suivi des dossiers d&rsquo;inscription rattachés à votre compte.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-primary-800 heading-serif">Mon espace</h1>
+          <p className="text-neutral-500 text-sm mt-1">
+            Suivi des dossiers d&rsquo;inscription rattachés à votre compte.
+          </p>
+        </div>
+        <Link
+          href="/parent/paiement"
+          className="self-start bg-primary-800 hover:bg-primary-900 text-white text-sm font-semibold px-4 py-2.5 rounded transition-colors whitespace-nowrap"
+        >
+          Déclarer un paiement
+        </Link>
       </div>
 
       {dossiers.map((d) => (
