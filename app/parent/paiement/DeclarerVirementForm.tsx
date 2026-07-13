@@ -4,7 +4,6 @@ import { useRef, useState, useTransition } from "react";
 import { declarerVirement } from "./actions";
 import FormField, { inputClasses, selectClasses } from "@/components/ui/FormField";
 import { TYPES_FRAIS } from "./upload-constants";
-import MobileMoneySection from "./MobileMoneySection";
 
 export interface EleveOption {
   preInscriptionId: string;
@@ -20,7 +19,6 @@ export default function DeclarerVirementForm({ eleves }: DeclarerVirementFormPro
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [montant, setMontant] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,7 +31,6 @@ export default function DeclarerVirementForm({ eleves }: DeclarerVirementFormPro
       if (res.success) {
         setSuccess(true);
         formRef.current?.reset();
-        setMontant("");
       } else {
         setError(res.error);
       }
@@ -79,15 +76,11 @@ export default function DeclarerVirementForm({ eleves }: DeclarerVirementFormPro
             min={1}
             step={1}
             required
-            value={montant}
-            onChange={(e) => setMontant(e.target.value)}
             className={inputClasses}
             placeholder="Ex : 50000"
           />
         </FormField>
       </div>
-
-      <MobileMoneySection montant={montant} />
 
       <FormField
         id="referenceVirement"

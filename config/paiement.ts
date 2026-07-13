@@ -12,16 +12,3 @@ export const COORDONNEES_BANCAIRES = {
   devise: 'XOF',
   typeCompte: 'Courant',
 } as const
-
-export const MOBILE_MONEY = {
-  orange: {
-    actif: false, // passer à true une fois le numéro renseigné
-    numero: '',
-    nomCompte: '',
-  },
-  moov: {
-    actif: false, // passer à true une fois le numéro renseigné
-    numero: '',
-    nomCompte: '',
-  },
-} as const
