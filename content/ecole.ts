@@ -34,7 +34,7 @@ export const ecoleContent = {
     },
     proviseur: {
       role: "Proviseur",
-      name: "Sœur Marie Madeleine Dakono",
+      name: "TINTILA Yamdaogo",
     },
   },
   fondateur: {

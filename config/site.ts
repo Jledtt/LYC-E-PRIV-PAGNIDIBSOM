@@ -4,7 +4,7 @@ export const siteConfig = {
   sigle: "LPP",
   tagline: "Bâtir l'Excellence",
   founder: "Tiendrebeogo Ousmane",
-  proviseur: "Sœur Marie Madeleine Dakono",
+  proviseur: "TINTILA Yamdaogo",
   foundedYear: 2021,
   description:
     "Le Lycée Privé Pagnidibsom (LPP) est un établissement d'enseignement privé situé au Secteur 32 de Ouagadougou, Burkina Faso. Nous accueillons les élèves du primaire (CP1 à CM2), du collège (6e à 3e), du lycée général (2nde et 1re — séries A et D) et de l'enseignement technique (BEP1 Génie Civil, BEP1 Électrotechnique) dans un cadre clôturé, sécurisé et propice à l'excellence.",
