@@ -6,6 +6,25 @@ import { sendChangementStatut } from "@/lib/email/send";
 import type { StatutChangement } from "@/lib/email/templates";
 import { STATUTS_VALIDES } from "./statuts";
 import { CLASSES } from "@/lib/scolarite";
+import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_SIZE_BYTES } from "./photo-constants";
+
+const TELEPHONE_REGEX = /^(\+?226)?[0-9\s\-]{8,15}$/;
+
+async function requireAdmin(authClient: Awaited<ReturnType<typeof createAuthClient>>) {
+  const {
+    data: { user },
+  } = await authClient.auth.getUser();
+  if (!user) return null;
+
+  const { data: profile } = await authClient
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (profile?.role !== "admin") return null;
+
+  return user;
+}
 
 export type UpdateStatutResult = { success: true } | { success: false; error: string };
 
@@ -95,5 +114,94 @@ export async function updateClasseActuelle(
 
   revalidatePath(`/admin/pre-inscriptions/${id}`);
   revalidatePath("/admin/pre-inscriptions");
+  return { success: true };
+}
+
+export async function updateContactUrgence(
+  id: string,
+  telephone: string
+): Promise<UpdateStatutResult> {
+  const trimmed = telephone.trim();
+  if (trimmed && !TELEPHONE_REGEX.test(trimmed)) {
+    return { success: false, error: "Numéro de téléphone invalide." };
+  }
+
+  const authClient = await createAuthClient();
+  const user = await requireAdmin(authClient);
+  if (!user) return { success: false, error: "Accès refusé." };
+
+  const { error } = await authClient
+    .from("pre_inscriptions")
+    .update({ contact_urgence_telephone: trimmed || null })
+    .eq("id", id);
+
+  if (error) {
+    console.error("[admin/pre-inscriptions] Erreur update contact_urgence_telephone :", error);
+    return { success: false, error: "Erreur lors de la mise à jour." };
+  }
+
+  revalidatePath(`/admin/pre-inscriptions/${id}`);
+  return { success: true };
+}
+
+const PHOTO_EXTENSIONS: Record<(typeof ALLOWED_PHOTO_TYPES)[number], string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+};
+
+export async function uploadPhotoEleve(id: string, formData: FormData): Promise<UpdateStatutResult> {
+  const authClient = await createAuthClient();
+  const user = await requireAdmin(authClient);
+  if (!user) return { success: false, error: "Accès refusé." };
+
+  const file = formData.get("file") as File | null;
+  if (!file || file.size === 0) {
+    return { success: false, error: "Veuillez sélectionner une photo." };
+  }
+
+  if (!ALLOWED_PHOTO_TYPES.includes(file.type as (typeof ALLOWED_PHOTO_TYPES)[number])) {
+    return { success: false, error: "Format non supporté (JPEG ou PNG uniquement)." };
+  }
+
+  if (file.size > MAX_PHOTO_SIZE_BYTES) {
+    return { success: false, error: "Photo trop volumineuse (2 Mo maximum)." };
+  }
+
+  const { data: existing } = await authClient
+    .from("pre_inscriptions")
+    .select("photo_path")
+    .eq("id", id)
+    .maybeSingle();
+
+  const ext = PHOTO_EXTENSIONS[file.type as (typeof ALLOWED_PHOTO_TYPES)[number]];
+  const path = `${id}/photo.${ext}`;
+
+  // Évite un fichier orphelin si le format change (ex: png -> jpg), le
+  // chemin (donc le nom de fichier) n'étant alors plus le même.
+  if (existing?.photo_path && existing.photo_path !== path) {
+    await authClient.storage.from("photos-eleves").remove([existing.photo_path]);
+  }
+
+  const { error: uploadError } = await authClient.storage.from("photos-eleves").upload(path, file, {
+    contentType: file.type,
+    upsert: true,
+  });
+
+  if (uploadError) {
+    console.error("[admin/pre-inscriptions] Erreur upload photo élève :", uploadError);
+    return { success: false, error: "Erreur lors de l'envoi de la photo." };
+  }
+
+  const { error: updateError } = await authClient
+    .from("pre_inscriptions")
+    .update({ photo_path: path })
+    .eq("id", id);
+
+  if (updateError) {
+    console.error("[admin/pre-inscriptions] Erreur update photo_path :", updateError);
+    return { success: false, error: "Erreur lors de l'enregistrement de la photo." };
+  }
+
+  revalidatePath(`/admin/pre-inscriptions/${id}`);
   return { success: true };
 }

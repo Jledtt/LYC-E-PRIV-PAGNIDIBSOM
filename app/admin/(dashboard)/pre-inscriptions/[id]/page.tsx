@@ -7,6 +7,10 @@ import ClasseActuelleSelect from "../ClasseActuelleSelect";
 import { STATUT_OPTIONS } from "../statuts";
 import DossierTokenSection from "./DossierTokenSection";
 import TelechargerPdfButton from "./TelechargerPdfButton";
+import GenererCarteButton from "./GenererCarteButton";
+import PhotoEleveUpload from "../PhotoEleveUpload";
+import ContactUrgenceField from "../ContactUrgenceField";
+import { isEligibleForCard } from "@/lib/pdf/carteScolaire/buildCardContent";
 
 export const metadata: Metadata = {
   title: "Détail de la pré-inscription",
@@ -56,6 +60,8 @@ interface PreInscriptionDetail {
   statut: string;
   classe_actuelle: string | null;
   dossier_token: string | null;
+  photo_path: string | null;
+  contact_urgence_telephone: string | null;
   sante_asthme: boolean;
   sante_cardiopathie: boolean;
   sante_diabete: boolean;
@@ -107,7 +113,7 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
   const { data } = await supabase
     .from("pre_inscriptions")
     .select(
-      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, eleve_ethnie, eleve_religion, eleve_telephone_domicile, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_service, pere_telephone, pere_email, mere_nom, mere_prenom, mere_profession, mere_service, mere_telephone, mere_email, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut, classe_actuelle, dossier_token, sante_asthme, sante_cardiopathie, sante_diabete, sante_drepanocytose, sante_hta, sante_epilepsie, aptitude_sport"
+      "id, created_at, eleve_nom, eleve_prenom, eleve_date_naissance, eleve_lieu_naissance, eleve_nationalite, eleve_sexe, eleve_ethnie, eleve_religion, eleve_telephone_domicile, classe_souhaitee, serie, classe_redoublee, ecole_precedente, secteur, pere_nom, pere_prenom, pere_profession, pere_service, pere_telephone, pere_email, mere_nom, mere_prenom, mere_profession, mere_service, mere_telephone, mere_email, parent_nom, parent_prenom, parent_telephone, parent_email, quartier_ville, message, statut, classe_actuelle, dossier_token, photo_path, contact_urgence_telephone, sante_asthme, sante_cardiopathie, sante_diabete, sante_drepanocytose, sante_hta, sante_epilepsie, aptitude_sport"
     )
     .eq("id", id)
     .maybeSingle();
@@ -119,6 +125,14 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
   const p = data as PreInscriptionDetail;
   const hasPere = Boolean(p.pere_nom || p.pere_prenom || p.pere_profession || p.pere_telephone);
   const hasMere = Boolean(p.mere_nom || p.mere_prenom || p.mere_profession || p.mere_telephone);
+
+  let photoSignedUrl: string | null = null;
+  if (p.photo_path) {
+    const { data: signed } = await supabase.storage
+      .from("photos-eleves")
+      .createSignedUrl(p.photo_path, 300);
+    photoSignedUrl = signed?.signedUrl ?? null;
+  }
 
   return (
     <div>
@@ -142,6 +156,19 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
         </div>
         <div className="flex flex-wrap gap-3 items-start">
           <TelechargerPdfButton id={p.id} />
+          <GenererCarteButton
+            id={p.id}
+            eligible={isEligibleForCard({
+              eleve_nom: p.eleve_nom,
+              eleve_prenom: p.eleve_prenom,
+              eleve_date_naissance: p.eleve_date_naissance,
+              eleve_lieu_naissance: p.eleve_lieu_naissance,
+              classe_actuelle: p.classe_actuelle,
+              classe_souhaitee: p.classe_souhaitee,
+              photo_path: p.photo_path,
+              contact_urgence_telephone: p.contact_urgence_telephone,
+            })}
+          />
           <StatusSelect id={p.id} currentStatut={p.statut} />
           <ClasseActuelleSelect id={p.id} currentClasse={p.classe_actuelle} />
         </div>
@@ -170,6 +197,11 @@ export default async function AdminPreInscriptionDetailPage({ params }: PageProp
             <Champ label="Secteur" value={p.secteur} />
             <Champ label="Quartier / Ville" value={p.quartier_ville} />
           </dl>
+
+          <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-neutral-100">
+            <PhotoEleveUpload id={p.id} currentPhotoSignedUrl={photoSignedUrl} />
+            <ContactUrgenceField id={p.id} currentTelephone={p.contact_urgence_telephone} />
+          </div>
         </section>
 
         <section className="flex flex-col gap-6">
