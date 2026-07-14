@@ -13,19 +13,6 @@ export type ActionResult =
   | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
 export async function submitPreInscription(formData: FormData): Promise<ActionResult> {
-  // Rate-limit : 3 soumissions / 10 min par IP.
-  // Bucket isolé du formulaire contact pour ne pas les pénaliser mutuellement.
-  const headersList = await headers();
-  const ip = getClientIp(headersList);
-  const { allowed } = checkRateLimit(`pre-inscription:${ip}`);
-  if (!allowed) {
-    return {
-      success: false,
-      error:
-        "Trop de tentatives. Veuillez patienter quelques minutes avant de réessayer.",
-    };
-  }
-
   const raw = Object.fromEntries(formData.entries());
   const parsed = preInscriptionSchema.safeParse(raw);
 
@@ -38,6 +25,25 @@ export async function submitPreInscription(formData: FormData): Promise<ActionRe
       success: false,
       error: "Veuillez corriger les erreurs dans le formulaire.",
       fieldErrors,
+    };
+  }
+
+  // Rate-limit : 8 soumissions valides / 20 min par IP. Vérifié APRÈS la
+  // validation Zod (pas avant) pour qu'une simple erreur de saisie corrigée
+  // par le parent ne consomme jamais le quota — seules les tentatives
+  // structurellement valides comptent. Seuil relevé (était 3/10min) pour
+  // couvrir une même famille inscrivant plusieurs enfants dans différents
+  // cycles (primaire/collège/lycée/technique) depuis la même connexion.
+  // Bucket isolé du formulaire contact pour ne pas les pénaliser mutuellement.
+  const headersList = await headers();
+  const ip = getClientIp(headersList);
+  const { allowed } = checkRateLimit(`pre-inscription:${ip}`, 8, 20 * 60 * 1000);
+  if (!allowed) {
+    console.warn(`[pre-inscription] Rate-limit atteint pour IP ${ip}`);
+    return {
+      success: false,
+      error:
+        "Trop de tentatives. Veuillez patienter quelques minutes avant de réessayer.",
     };
   }
 
