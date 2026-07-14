@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/admin/calendrier-devoirs", label: "Calendrier devoirs" },
   { href: "/admin/notifications", label: "Notifications" },
   { href: "/admin/paiements", label: "Paiements à valider" },
+  { href: "/admin/cartes-scolaires", label: "Cartes scolaires" },
 ];
 
 export default function AdminNav() {
