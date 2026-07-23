@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { Readable } from "node:stream";
 import { renderToStream } from "@react-pdf/renderer";
 import { createServerClient } from "@/lib/supabase/server";
+import { requireSession } from "@/lib/pdf/route-auth";
 import {
   CLASSES,
   TRIMESTRES,
@@ -29,6 +30,9 @@ export async function GET(request: NextRequest) {
   if (!trimestreParam || !(TRIMESTRES as readonly string[]).includes(trimestreKey)) {
     return new Response("Trimestre invalide.", { status: 400 });
   }
+
+  const denied = await requireSession();
+  if (denied) return denied;
 
   const { annee, anneeN1 } = getAnneeScolaire();
   const { gte, lte } = getTrimestreDateRange(trimestreKey, annee, anneeN1);

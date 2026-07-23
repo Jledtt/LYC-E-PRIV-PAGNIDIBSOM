@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { Readable } from "node:stream";
 import { renderToStream } from "@react-pdf/renderer";
 import { createServerClient } from "@/lib/supabase/server";
+import { requireAdminSession } from "@/lib/pdf/route-auth";
 import CarteScolairePDF from "@/lib/pdf/carteScolaire/CarteScolairePDF";
 import { buildCardContent, isEligibleForCard, type StudentForCard } from "@/lib/pdf/carteScolaire/buildCardContent";
 
@@ -21,6 +22,9 @@ export async function GET(request: NextRequest) {
   if (!id) {
     return new Response("Paramètre id requis.", { status: 400 });
   }
+
+  const denied = await requireAdminSession();
+  if (denied) return denied;
 
   const supabase = createServerClient();
   const { data, error } = await supabase

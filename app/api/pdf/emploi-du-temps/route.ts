@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { Readable } from "node:stream";
 import { renderToStream } from "@react-pdf/renderer";
 import { createServerClient } from "@/lib/supabase/server";
+import { requireSession } from "@/lib/pdf/route-auth";
 import { CLASSES, type Classe } from "@/lib/scolarite";
 import EmploiDuTempsPDF from "@/lib/pdf/EmploiDuTempsPDF";
 
@@ -14,6 +15,9 @@ export async function GET(request: NextRequest) {
     return new Response("Classe invalide.", { status: 400 });
   }
   const classe = classeParam as Classe;
+
+  const denied = await requireSession();
+  if (denied) return denied;
 
   const supabase = createServerClient();
   const { data: rows, error } = await supabase

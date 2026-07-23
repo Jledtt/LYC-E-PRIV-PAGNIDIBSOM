@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { Readable } from "node:stream";
 import { renderToStream } from "@react-pdf/renderer";
 import { createServerClient } from "@/lib/supabase/server";
+import { requireAdminSession } from "@/lib/pdf/route-auth";
 import PlancheCartesScolairesPDF from "@/lib/pdf/carteScolaire/PlancheCartesScolairesPDF";
 import { buildCardContent, isEligibleForCard, type StudentForCard } from "@/lib/pdf/carteScolaire/buildCardContent";
 
@@ -26,6 +27,9 @@ export async function POST(request: NextRequest) {
       status: 400,
     });
   }
+
+  const denied = await requireAdminSession();
+  if (denied) return denied;
 
   const supabase = createServerClient();
   const { data, error } = await supabase
