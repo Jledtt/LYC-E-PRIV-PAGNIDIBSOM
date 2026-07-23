@@ -87,14 +87,19 @@ export async function updateClasseActuelle(
   if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   const authClient = await createAuthClient();
-  const { error } = await authClient
+  const { data: updated, error } = await authClient
     .from("pre_inscriptions")
     .update({ classe_actuelle: classeActuelle })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
   if (error) {
     console.error("[admin/pre-inscriptions] Erreur update classe_actuelle :", error);
     return { success: false, error: "Erreur lors de la mise à jour." };
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "Dossier introuvable." };
   }
 
   revalidatePath(`/admin/pre-inscriptions/${id}`);
@@ -114,14 +119,19 @@ export async function updateContactUrgence(
   if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   const authClient = await createAuthClient();
-  const { error } = await authClient
+  const { data: updated, error } = await authClient
     .from("pre_inscriptions")
     .update({ contact_urgence_telephone: trimmed || null })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id");
 
   if (error) {
     console.error("[admin/pre-inscriptions] Erreur update contact_urgence_telephone :", error);
     return { success: false, error: "Erreur lors de la mise à jour." };
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "Dossier introuvable." };
   }
 
   revalidatePath(`/admin/pre-inscriptions/${id}`);
