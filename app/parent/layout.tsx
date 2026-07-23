@@ -19,8 +19,14 @@ export default async function ParentLayout({ children }: { children: React.React
     <div className="min-h-screen bg-neutral-50">
       <header className="bg-primary-800 text-white">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+          {/* prefetch={false} : ce bandeau est présent sur toute page parent,
+              donc chaque rendu déclenche des requêtes de prefetch traversant
+              middleware.ts. Concurrentes avec d'autres requêtes proches de
+              l'expiration du JWT, elles peuvent faire la course sur le même
+              refresh token et provoquer une révocation (cf. AdminNav.tsx). */}
           <Link
             href={session ? "/parent/dashboard" : "/parent/login"}
+            prefetch={false}
             className="flex items-center gap-2"
           >
             <LogoSvg className="w-8 h-8" />
@@ -36,6 +42,7 @@ export default async function ParentLayout({ children }: { children: React.React
             <div className="flex items-center gap-4">
               <Link
                 href="/parent/dashboard"
+                prefetch={false}
                 className="text-sm font-medium text-primary-100 hover:text-white transition-colors"
               >
                 Tableau de bord

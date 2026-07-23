@@ -3,13 +3,18 @@ import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * Rafraîchit la session Supabase (cookies) à chaque requête matchée par
- * middleware.ts (/admin/*, /parent/dashboard/*, /parent/rattacher/*) et
- * protège l'accès :
+ * middleware.ts (/admin/*, /parent/*) et protège l'accès :
  *  - /admin/* : pas de session + route protégée -> redirect /admin/login ;
  *    session présente + /admin/login -> redirect /admin
- *  - /parent/dashboard/*, /parent/rattacher/* : pas de session -> redirect
- *    /parent/login (les autres routes /parent/* — login, callback — ne
- *    sont pas matchées, donc jamais interceptées ici)
+ *  - /parent/* : pas de session + route protégée -> redirect /parent/login
+ *    (sauf /parent/login et /parent/callback, publiques — cf. isParentPublicPage)
+ *
+ * Le matcher couvre TOUT /parent/:path* (pas une énumération de sous-routes) :
+ * une énumération avait dérivé une première fois et laissé /parent/paiement
+ * non protégé, provoquant des sessions jamais rafraîchies sur cette page
+ * (le refresh tenté par un Server Component en aval est silencieusement
+ * perdu, cf. createAuthClient() dans lib/supabase/server.ts) — toute
+ * nouvelle route /parent/* est protégée par défaut, sans y penser.
  *
  * La vérification du RÔLE (admin ou parent, table profiles) se fait plus
  * bas dans l'arbre (app/admin/(dashboard)/layout.tsx, lib/parent-session.ts) :
@@ -51,6 +56,13 @@ export async function updateSession(request: NextRequest) {
     pathname === "/admin/mot-de-passe-oublie" ||
     pathname === "/admin/reinitialiser-mot-de-passe";
 
+  const isParentRoute = pathname.startsWith("/parent");
+  // /parent/login (page de connexion) et /parent/callback (retour OAuth
+  // Google — pas encore de session à ce stade, exchangeCodeForSession n'a
+  // pas encore eu lieu) doivent rester accessibles sans session, exactement
+  // comme les pages publiques admin ci-dessus.
+  const isParentPublicPage = pathname === "/parent/login" || pathname === "/parent/callback";
+
   // Toute redirection doit repartir de supabaseResponse (pas d'un
   // NextResponse.redirect() "nu") : c'est lui qui porte les éventuels
   // Set-Cookie écrits par setAll() ci-dessus (rafraîchissement de session).
@@ -76,10 +88,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // /parent/dashboard/* et /parent/rattacher/* uniquement (cf. matcher dans
-  // middleware.ts) : /parent/login et /parent/callback ne passent jamais
-  // par ce middleware.
-  if (pathname.startsWith("/parent") && !user) {
+  if (isParentRoute && !user && !isParentPublicPage) {
     return redirect("/parent/login");
   }
 

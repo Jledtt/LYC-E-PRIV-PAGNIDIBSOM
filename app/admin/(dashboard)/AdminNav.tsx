@@ -16,6 +16,14 @@ const navLinks = [
   { href: "/admin/cartes-scolaires", label: "Cartes scolaires" },
 ];
 
+// prefetch={false} sur ces 10 liens : par défaut Next.js prefetche tous les
+// liens visibles au viewport, donc chaque rendu de ce bandeau (présent sur
+// TOUTE page admin) déclenche jusqu'à 10 requêtes concurrentes traversant
+// toutes middleware.ts. Si le JWT est proche de l'expiration, ces requêtes
+// simultanées peuvent lire le même refresh token avant que le Set-Cookie de
+// la première rotation n'ait atteint le navigateur -> détection de
+// réutilisation côté Supabase -> révocation de session (déconnexions
+// aléatoires observées en production).
 export default function AdminNav() {
   const pathname = usePathname();
 
@@ -26,6 +34,7 @@ export default function AdminNav() {
           <Link
             key={link.href}
             href={link.href}
+            prefetch={false}
             aria-current={pathname === link.href ? "page" : undefined}
             className={[
               "px-3 py-2.5 text-sm font-medium transition-colors whitespace-nowrap",
