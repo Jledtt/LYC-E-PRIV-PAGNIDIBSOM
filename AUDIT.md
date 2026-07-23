@@ -99,6 +99,8 @@ Point clé : la recherche des consommateurs (`grep /api/pdf`) montre que ces rou
 
 **Effort :** ~2-3 h pour les 5 routes + tests manuels (admin, parent, non connecté).
 
+> **Décision (2026-07-23) — Risque accepté, point clos.** Les policies `emploi_du_temps_authenticated_select` et `calendrier_devoirs_authenticated_select` (`qual = true`) restent volontairement ouvertes à tout utilisateur authentifié. Justification : (1) ces tables ne contiennent **aucune donnée personnelle d'élève ni de famille** — uniquement matière, créneau, salle, enseignant (EDT) et date/horaire/type (devoirs), informations de nature quasi publique ; (2) le vecteur PDF (`/api/pdf/emploi-du-temps`, `/api/pdf/calendrier-devoirs`) a été délibérément traité en **Option A** (toute session authentifiée, cf. commit d'auth des routes PDF) et lit via service_role : resserrer la seule RLS REST laisserait ce vecteur ouvert, produisant une protection incohérente en trompe-l'œil ; (3) le dashboard parent filtre déjà sa requête aux classes de ses enfants rattachés — l'ouverture ne concerne que l'accès direct à l'API REST, sans surface d'exploitation à valeur réelle. **Ce point est clos ; il serait à rouvrir (resserrement RLS + routes PDF, pattern `is_admin() OR EXISTS(parent_eleves→pre_inscriptions.classe_actuelle)`) uniquement si ces tables venaient à porter des données nominatives par élève.**
+
 ---
 
 #### I-2 — `updatePreInscriptionStatut()` : pas de garde admin, succès fantôme, et email de statut déclenchable par un parent
