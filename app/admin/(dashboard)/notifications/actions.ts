@@ -33,6 +33,11 @@ export interface ParentDisponible {
 }
 
 export async function getParentsDisponibles(): Promise<ParentDisponible[]> {
+  const adminId = await getAdminUserId();
+  if (!adminId) {
+    throw new Error("Accès refusé.");
+  }
+
   const destinataires = await getDestinataires();
   if (destinataires.length === 0) return [];
 
