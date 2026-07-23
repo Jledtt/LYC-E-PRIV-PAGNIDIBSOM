@@ -45,6 +45,8 @@ export async function updatePreInscriptionStatut(
   }
 
   const supabase = await createAuthClient();
+  const user = await requireAdmin(supabase);
+  if (!user) return { success: false, error: "Accès refusé." };
 
   // Récupéré avant l'update pour ne notifier que si le statut change
   // réellement, et pour disposer des champs nécessaires à l'email.
@@ -54,11 +56,19 @@ export async function updatePreInscriptionStatut(
     .eq("id", id)
     .maybeSingle();
 
-  const { error } = await supabase.from("pre_inscriptions").update({ statut }).eq("id", id);
+  const { data: updated, error } = await supabase
+    .from("pre_inscriptions")
+    .update({ statut })
+    .eq("id", id)
+    .select("id");
 
   if (error) {
     console.error("[admin/pre-inscriptions] Erreur mise à jour statut :", error);
     return { success: false, error: "Erreur lors de la mise à jour du statut." };
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "Dossier introuvable." };
   }
 
   revalidatePath("/admin/pre-inscriptions");
