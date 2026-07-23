@@ -1,3 +1,5 @@
+import { escapeHtml } from "./escape";
+
 const BORDEAUX = "#8B1A1A";
 const SITE_URL = "https://lyceepagnidibsom.com";
 const CONTACT_EMAIL = "infoslyceepagnidibsom@gmail.com";
@@ -47,16 +49,16 @@ export function confirmationPreInscription({
   const dossierUrl = `${SITE_URL}/mon-dossier/${dossierToken}`;
 
   const html = wrapEmail(`
-    <p>Bonjour ${nomParent},</p>
+    <p>Bonjour ${escapeHtml(nomParent)},</p>
     <p>Nous vous confirmons la bonne réception de la demande de pré-inscription suivante :</p>
     <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
       <tr>
         <td style="padding: 6px 0; color: #666666;">Élève</td>
-        <td style="padding: 6px 0; font-weight: bold;">${prenomEleve} ${nomEleve}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(`${prenomEleve} ${nomEleve}`)}</td>
       </tr>
       <tr>
         <td style="padding: 6px 0; color: #666666;">Classe souhaitée</td>
-        <td style="padding: 6px 0; font-weight: bold;">${classesouhaitee}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(classesouhaitee)}</td>
       </tr>
     </table>
     <p>Votre dossier sera examiné par notre équipe dans un délai de <strong>5 à 7 jours ouvrables</strong>.</p>
@@ -97,25 +99,25 @@ export function notificationAdmin({
     <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
       <tr>
         <td style="padding: 6px 0; color: #666666; width: 40%;">Élève</td>
-        <td style="padding: 6px 0; font-weight: bold;">${prenomEleve} ${nomEleve}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(`${prenomEleve} ${nomEleve}`)}</td>
       </tr>
       <tr>
         <td style="padding: 6px 0; color: #666666;">Classe souhaitée</td>
-        <td style="padding: 6px 0; font-weight: bold;">${classesouhaitee}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(classesouhaitee)}</td>
       </tr>
       <tr>
         <td style="padding: 6px 0; color: #666666;">Contact principal</td>
-        <td style="padding: 6px 0; font-weight: bold;">${nomParent}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(nomParent)}</td>
       </tr>
       <tr>
         <td style="padding: 6px 0; color: #666666;">Téléphone</td>
-        <td style="padding: 6px 0; font-weight: bold;">${telephone}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(telephone)}</td>
       </tr>
       ${
         email
           ? `<tr>
         <td style="padding: 6px 0; color: #666666;">Email</td>
-        <td style="padding: 6px 0; font-weight: bold;">${email}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(email)}</td>
       </tr>`
           : ""
       }
@@ -152,12 +154,16 @@ function changementStatutCorps(
   nomEleve: string,
   classesouhaitee: string
 ): string {
-  const eleve = `${prenomEleve} ${nomEleve}`;
+  // Valeurs issues du dossier (saisies au formulaire public) : échappées ici,
+  // une fois, avant interpolation dans les trois variantes ci-dessous.
+  const eleve = escapeHtml(`${prenomEleve} ${nomEleve}`);
+  const parent = escapeHtml(nomParent);
+  const classe = escapeHtml(classesouhaitee);
 
   if (statut === "accepte") {
     return `
-      <p>Bonjour ${nomParent},</p>
-      <p>Nous avons le plaisir de vous informer que la pré-inscription de <strong>${eleve}</strong> en classe de <strong>${classesouhaitee}</strong> a été <strong>acceptée</strong>. Toutes nos félicitations !</p>
+      <p>Bonjour ${parent},</p>
+      <p>Nous avons le plaisir de vous informer que la pré-inscription de <strong>${eleve}</strong> en classe de <strong>${classe}</strong> a été <strong>acceptée</strong>. Toutes nos félicitations !</p>
       <p><strong>Prochaines étapes :</strong></p>
       <ul style="padding-left: 20px;">
         <li>Finalisation du dossier administratif (documents à fournir)</li>
@@ -169,16 +175,16 @@ function changementStatutCorps(
 
   if (statut === "refuse") {
     return `
-      <p>Bonjour ${nomParent},</p>
+      <p>Bonjour ${parent},</p>
       <p>Nous vous remercions de l'intérêt porté au Lycée Privé Pagnidibsom pour la scolarité de <strong>${eleve}</strong>.</p>
-      <p>Après examen de votre dossier, nous ne sommes malheureusement pas en mesure de donner une suite favorable à cette demande de pré-inscription en classe de <strong>${classesouhaitee}</strong>.</p>
+      <p>Après examen de votre dossier, nous ne sommes malheureusement pas en mesure de donner une suite favorable à cette demande de pré-inscription en classe de <strong>${classe}</strong>.</p>
       <p>N'hésitez pas à nous recontacter à l'adresse ${CONTACT_EMAIL} si vous souhaitez échanger sur cette décision ou envisager une nouvelle demande.</p>
     `;
   }
 
   return `
-    <p>Bonjour ${nomParent},</p>
-    <p>Nous vous confirmons que le dossier de pré-inscription de <strong>${eleve}</strong> en classe de <strong>${classesouhaitee}</strong> a bien été reçu et est actuellement <strong>en cours d'examen</strong>.</p>
+    <p>Bonjour ${parent},</p>
+    <p>Nous vous confirmons que le dossier de pré-inscription de <strong>${eleve}</strong> en classe de <strong>${classe}</strong> a bien été reçu et est actuellement <strong>en cours d'examen</strong>.</p>
     <p>Nous reviendrons vers vous sous un délai de <strong>5 à 7 jours ouvrables</strong>.</p>
     <p>Pour toute question, contactez-nous à ${CONTACT_EMAIL}.</p>
   `;
@@ -202,11 +208,12 @@ export interface NotificationParentParams {
   contenu: string;
 }
 
-/** Convertit les retours à la ligne du contenu en paragraphes HTML. */
+/** Convertit les retours à la ligne du contenu en paragraphes HTML.
+ *  Le contenu (rédigé côté admin) est échappé avant conversion \n -> <br />. */
 function contenuEnParagraphes(contenu: string): string {
   return contenu
     .split(/\n{2,}/)
-    .map((bloc) => `<p style="margin: 0 0 16px;">${bloc.replace(/\n/g, "<br />")}</p>`)
+    .map((bloc) => `<p style="margin: 0 0 16px;">${escapeHtml(bloc).replace(/\n/g, "<br />")}</p>`)
     .join("");
 }
 
@@ -232,16 +239,17 @@ export function paiementValide({
   typeFrais,
   montant,
 }: PaiementValideParams): EmailTemplate {
-  const eleve = `${prenomEleve} ${nomEleve}`;
+  const eleve = `${prenomEleve} ${nomEleve}`; // brut : pour le subject (texte, non HTML)
+  const eleveHtml = escapeHtml(eleve); // échappé : pour le corps HTML
   const montantFormate = `${montant.toLocaleString("fr-FR")} FCFA`;
 
   const html = wrapEmail(`
     <p>Bonjour,</p>
-    <p>Nous vous confirmons que votre paiement pour <strong>${eleve}</strong> a bien été vérifié et validé.</p>
+    <p>Nous vous confirmons que votre paiement pour <strong>${eleveHtml}</strong> a bien été vérifié et validé.</p>
     <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
       <tr>
         <td style="padding: 6px 0; color: #666666; width: 40%;">Type de frais</td>
-        <td style="padding: 6px 0; font-weight: bold;">${typeFrais}</td>
+        <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(typeFrais)}</td>
       </tr>
       <tr>
         <td style="padding: 6px 0; color: #666666;">Montant</td>
@@ -274,8 +282,8 @@ export function bienvenueEspaceParent({
   const classeLabel = classeActuelle ?? "classe à confirmer par l'administration";
 
   const html = wrapEmail(`
-    <p>Bonjour ${nomParent},</p>
-    <p>Le dossier de <strong>${prenomEleve} ${nomEleve}</strong> (${classeLabel}) est maintenant rattaché à votre compte sur l'Espace Parent du Lycée Privé Pagnidibsom.</p>
+    <p>Bonjour ${escapeHtml(nomParent)},</p>
+    <p>Le dossier de <strong>${escapeHtml(`${prenomEleve} ${nomEleve}`)}</strong> (${escapeHtml(classeLabel)}) est maintenant rattaché à votre compte sur l'Espace Parent du Lycée Privé Pagnidibsom.</p>
     <p>Vous pouvez désormais y consulter :</p>
     <ul style="padding-left: 20px;">
       <li>L'emploi du temps de votre enfant</li>

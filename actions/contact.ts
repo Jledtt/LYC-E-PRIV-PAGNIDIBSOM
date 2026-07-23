@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { contactSchema } from "@/lib/schemas";
 import { createServerClient } from "@/lib/supabase/server";
 import { sendNotificationEmail } from "@/lib/email";
+import { escapeHtml } from "@/lib/email/escape";
 import type { ActionResult } from "@/actions/pre-inscription";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
@@ -78,11 +79,11 @@ export async function submitContact(formData: FormData): Promise<ActionResult> {
       subject: `Nouveau message de contact — ${data.nom}`,
       html: `
         <h2>Nouveau message de contact</h2>
-        <p><strong>Nom :</strong> ${data.nom}</p>
-        ${data.telephone ? `<p><strong>Téléphone :</strong> ${data.telephone}</p>` : ""}
-        ${data.email ? `<p><strong>Email :</strong> ${data.email}</p>` : ""}
+        <p><strong>Nom :</strong> ${escapeHtml(data.nom)}</p>
+        ${data.telephone ? `<p><strong>Téléphone :</strong> ${escapeHtml(data.telephone)}</p>` : ""}
+        ${data.email ? `<p><strong>Email :</strong> ${escapeHtml(data.email)}</p>` : ""}
         <p><strong>Message :</strong></p>
-        <p>${data.message.replace(/\n/g, "<br>")}</p>
+        <p>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
       `,
     });
   } catch (err) {
