@@ -186,12 +186,10 @@ export async function uploadPhotoEleve(id: string, formData: FormData): Promise<
   const ext = PHOTO_EXTENSIONS[file.type as (typeof ALLOWED_PHOTO_TYPES)[number]];
   const path = `${id}/photo.${ext}`;
 
-  // Évite un fichier orphelin si le format change (ex: png -> jpg), le
-  // chemin (donc le nom de fichier) n'étant alors plus le même.
-  if (existing?.photo_path && existing.photo_path !== path) {
-    await authClient.storage.from("photos-eleves").remove([existing.photo_path]);
-  }
-
+  // Upload AVANT toute suppression : si l'envoi échoue, l'ancienne photo doit
+  // survivre (ne jamais laisser l'élève sans photo). La suppression de
+  // l'ancien fichier orphelin (cas d'un changement de format png->jpg, chemin
+  // différent) n'a lieu qu'après confirmation du succès, tout en bas.
   const { error: uploadError } = await authClient.storage.from("photos-eleves").upload(path, file, {
     contentType: file.type,
     upsert: true,
@@ -210,6 +208,12 @@ export async function uploadPhotoEleve(id: string, formData: FormData): Promise<
   if (updateError) {
     console.error("[admin/pre-inscriptions] Erreur update photo_path :", updateError);
     return { success: false, error: "Erreur lors de l'enregistrement de la photo." };
+  }
+
+  // Nouvelle photo en place et référencée : on peut retirer l'ancien fichier
+  // s'il portait un chemin différent (sinon ups:true l'a déjà écrasé).
+  if (existing?.photo_path && existing.photo_path !== path) {
+    await authClient.storage.from("photos-eleves").remove([existing.photo_path]);
   }
 
   revalidatePath(`/admin/pre-inscriptions/${id}`);
