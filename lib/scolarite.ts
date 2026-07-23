@@ -3,7 +3,7 @@
 
 export const CLASSES = [
   'CP1', 'CP2', 'CE1', 'CE2', 'CM1', 'CM2',
-  '6e', '5e', '4e', '3e', '2nde A', '2nde D',
+  '6e', '5e', '4e', '3e', '2nde A', '2nde D', '1re A', '1re D', 'BEP1-GC', 'BEP1-ET',
 ] as const;
 export type Classe = (typeof CLASSES)[number];
 
