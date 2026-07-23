@@ -2,25 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
+import { getAdminIdentity } from "@/lib/require-admin";
 import { getDestinataires, envoyerNotification as envoyerNotificationLib } from "@/lib/email/notifications";
 
 const PAGE_SIZE = 10;
-
-async function getAdminUserId(): Promise<string | null> {
-  const supabase = await createAuthClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  return profile?.role === "admin" ? user.id : null;
-}
 
 export interface ParentDisponible {
   preInscriptionId: string;
@@ -33,8 +18,8 @@ export interface ParentDisponible {
 }
 
 export async function getParentsDisponibles(): Promise<ParentDisponible[]> {
-  const adminId = await getAdminUserId();
-  if (!adminId) {
+  const admin = await getAdminIdentity();
+  if (!admin) {
     throw new Error("Accès refusé.");
   }
 
@@ -86,8 +71,8 @@ export type EnvoyerNotificationActionResult =
 export async function envoyerNotification(
   data: EnvoyerNotificationInput
 ): Promise<EnvoyerNotificationActionResult> {
-  const adminId = await getAdminUserId();
-  if (!adminId) {
+  const admin = await getAdminIdentity();
+  if (!admin) {
     return { success: false, error: "Accès refusé." };
   }
 
@@ -133,7 +118,7 @@ export async function envoyerNotification(
     destinataires_emails: destinataires.filter((d) => d.email).map((d) => d.email),
     destinataires_telephones: destinataires.filter((d) => d.telephone).map((d) => d.telephone),
     destinataires_pre_inscription_ids: destinataires.map((d) => d.preInscriptionId),
-    envoye_par: adminId,
+    envoye_par: admin.id,
     statut,
     resultats: { email: resultat.email, sms: resultat.sms },
     erreurs: [...resultat.email.erreurs, ...resultat.sms.erreurs],
@@ -230,8 +215,8 @@ export type UpsertModeleResult =
   | { success: false; error: string };
 
 export async function upsertModele(data: UpsertModeleInput): Promise<UpsertModeleResult> {
-  const adminId = await getAdminUserId();
-  if (!adminId) return { success: false, error: "Accès refusé." };
+  const admin = await getAdminIdentity();
+  if (!admin) return { success: false, error: "Accès refusé." };
 
   if (!data.nom.trim() || !data.sujet.trim() || !data.contenu.trim()) {
     return { success: false, error: "Nom, sujet et contenu sont requis." };
@@ -272,8 +257,8 @@ export async function upsertModele(data: UpsertModeleInput): Promise<UpsertModel
 export type SupprimerModeleResult = { success: true } | { success: false; error: string };
 
 export async function supprimerModele(id: string): Promise<SupprimerModeleResult> {
-  const adminId = await getAdminUserId();
-  if (!adminId) return { success: false, error: "Accès refusé." };
+  const admin = await getAdminIdentity();
+  if (!admin) return { success: false, error: "Accès refusé." };
 
   const supabase = await createAuthClient();
 

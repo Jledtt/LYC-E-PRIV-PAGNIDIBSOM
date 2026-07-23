@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
+import { isAdmin } from "@/lib/require-admin";
 import { sendChangementStatut } from "@/lib/email/send";
 import type { StatutChangement } from "@/lib/email/templates";
 import { STATUTS_VALIDES } from "./statuts";
@@ -9,22 +10,6 @@ import { CLASSES } from "@/lib/scolarite";
 import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_SIZE_BYTES } from "./photo-constants";
 
 const TELEPHONE_REGEX = /^(\+?226)?[0-9\s\-]{8,15}$/;
-
-async function requireAdmin(authClient: Awaited<ReturnType<typeof createAuthClient>>) {
-  const {
-    data: { user },
-  } = await authClient.auth.getUser();
-  if (!user) return null;
-
-  const { data: profile } = await authClient
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-  if (profile?.role !== "admin") return null;
-
-  return user;
-}
 
 export type UpdateStatutResult = { success: true } | { success: false; error: string };
 
@@ -44,9 +29,9 @@ export async function updatePreInscriptionStatut(
     return { success: false, error: "Statut invalide." };
   }
 
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
+
   const supabase = await createAuthClient();
-  const user = await requireAdmin(supabase);
-  if (!user) return { success: false, error: "Accès refusé." };
 
   // Récupéré avant l'update pour ne notifier que si le statut change
   // réellement, et pour disposer des champs nécessaires à l'email.
@@ -99,19 +84,9 @@ export async function updateClasseActuelle(
     return { success: false, error: "Classe invalide." };
   }
 
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
+
   const authClient = await createAuthClient();
-  const {
-    data: { user },
-  } = await authClient.auth.getUser();
-  if (!user) return { success: false, error: "Non authentifié." };
-
-  const { data: profile } = await authClient
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-  if (profile?.role !== "admin") return { success: false, error: "Accès refusé." };
-
   const { error } = await authClient
     .from("pre_inscriptions")
     .update({ classe_actuelle: classeActuelle })
@@ -136,10 +111,9 @@ export async function updateContactUrgence(
     return { success: false, error: "Numéro de téléphone invalide." };
   }
 
-  const authClient = await createAuthClient();
-  const user = await requireAdmin(authClient);
-  if (!user) return { success: false, error: "Accès refusé." };
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
+  const authClient = await createAuthClient();
   const { error } = await authClient
     .from("pre_inscriptions")
     .update({ contact_urgence_telephone: trimmed || null })
@@ -160,9 +134,9 @@ const PHOTO_EXTENSIONS: Record<(typeof ALLOWED_PHOTO_TYPES)[number], string> = {
 };
 
 export async function uploadPhotoEleve(id: string, formData: FormData): Promise<UpdateStatutResult> {
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
+
   const authClient = await createAuthClient();
-  const user = await requireAdmin(authClient);
-  if (!user) return { success: false, error: "Accès refusé." };
 
   const file = formData.get("file") as File | null;
   if (!file || file.size === 0) {

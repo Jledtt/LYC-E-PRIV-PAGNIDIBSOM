@@ -2,23 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
+import { isAdmin } from "@/lib/require-admin";
 import { CLASSES, JOURS, CRENEAUX, type Classe, type Jour, type Creneau } from "@/lib/scolarite";
 
 export type ActionResult = { success: true } | { success: false; error: string };
-
-async function requireAdmin(): Promise<boolean> {
-  const supabase = await createAuthClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return false;
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-  return profile?.role === "admin";
-}
 
 export interface UpsertCellulesPayload {
   classe: Classe;
@@ -30,7 +17,7 @@ export interface UpsertCellulesPayload {
 }
 
 export async function upsertCellule(payload: UpsertCellulesPayload): Promise<ActionResult> {
-  if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   if (!(CLASSES as readonly string[]).includes(payload.classe))
     return { success: false, error: "Classe invalide." };
@@ -63,7 +50,7 @@ export async function upsertCellule(payload: UpsertCellulesPayload): Promise<Act
 }
 
 export async function supprimerCellule(id: string): Promise<ActionResult> {
-  if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   const supabase = await createAuthClient();
   const { error } = await supabase.from("emploi_du_temps").delete().eq("id", id);

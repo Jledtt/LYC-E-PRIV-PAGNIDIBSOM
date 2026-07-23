@@ -2,23 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
+import { isAdmin } from "@/lib/require-admin";
 import { CLASSES, TYPES_DEVOIR, type Classe, type TypeDevoir } from "@/lib/scolarite";
 
 export type ActionResult = { success: true } | { success: false; error: string };
-
-async function requireAdmin(): Promise<boolean> {
-  const supabase = await createAuthClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return false;
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-  return profile?.role === "admin";
-}
 
 export interface AjouterDevoirPayload {
   classe: Classe;
@@ -30,7 +17,7 @@ export interface AjouterDevoirPayload {
 }
 
 export async function ajouterDevoir(payload: AjouterDevoirPayload): Promise<ActionResult> {
-  if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   if (!(CLASSES as readonly string[]).includes(payload.classe))
     return { success: false, error: "Classe invalide." };
@@ -59,7 +46,7 @@ export async function ajouterDevoir(payload: AjouterDevoirPayload): Promise<Acti
 }
 
 export async function supprimerDevoir(id: string): Promise<ActionResult> {
-  if (!(await requireAdmin())) return { success: false, error: "Accès refusé." };
+  if (!(await isAdmin())) return { success: false, error: "Accès refusé." };
 
   const supabase = await createAuthClient();
   const { error } = await supabase.from("calendrier_devoirs").delete().eq("id", id);

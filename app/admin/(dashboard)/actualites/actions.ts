@@ -3,35 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthClient } from "@/lib/supabase/server";
+import { getAdminIdentity } from "@/lib/require-admin";
 import { STATUTS_VALIDES } from "./statuts";
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_BYTES } from "./image";
 
 export type ActionResult = { success: true } | { success: false; error: string };
 
 type AuthClient = Awaited<ReturnType<typeof createAuthClient>>;
-
-// Défense en profondeur : RLS (is_admin()) protège déjà la table articles,
-// mais on vérifie aussi le rôle ici pour renvoyer un message clair plutôt
-// qu'une erreur RLS brute, et pour récupérer le display_name de l'auteur.
-async function getAdminUser(
-  supabase: AuthClient
-): Promise<{ id: string; displayName: string | null } | null> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return null;
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role, display_name")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (profile?.role !== "admin") return null;
-
-  return { id: user.id, displayName: profile.display_name ?? null };
-}
 
 type UploadResult = { success: true; url: string } | { success: false; error: string };
 
@@ -92,7 +70,7 @@ function readFormFields(formData: FormData): ArticleFormFields | { error: string
 export async function createArticle(formData: FormData): Promise<ActionResult> {
   const supabase = await createAuthClient();
 
-  const admin = await getAdminUser(supabase);
+  const admin = await getAdminIdentity();
   if (!admin) {
     return { success: false, error: "Accès non autorisé." };
   }
@@ -148,7 +126,7 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
 export async function updateArticle(id: string, formData: FormData): Promise<ActionResult> {
   const supabase = await createAuthClient();
 
-  const admin = await getAdminUser(supabase);
+  const admin = await getAdminIdentity();
   if (!admin) {
     return { success: false, error: "Accès non autorisé." };
   }
@@ -219,7 +197,7 @@ export async function updateArticleStatus(id: string, status: string): Promise<A
 
   const supabase = await createAuthClient();
 
-  if (!(await getAdminUser(supabase))) {
+  if (!(await getAdminIdentity())) {
     return { success: false, error: "Accès non autorisé." };
   }
 
@@ -254,7 +232,7 @@ export async function updateArticleStatus(id: string, status: string): Promise<A
 export async function deleteArticle(id: string): Promise<ActionResult> {
   const supabase = await createAuthClient();
 
-  if (!(await getAdminUser(supabase))) {
+  if (!(await getAdminIdentity())) {
     return { success: false, error: "Accès non autorisé." };
   }
 
